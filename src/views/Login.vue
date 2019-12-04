@@ -27,6 +27,7 @@
             login(){
                 axios.post('/login', this.user)
                     .then(res => {
+                        console.log(res);
                         if (res.data.data.userType === 1){
                             this.$router.push('./teacher')
                         }
