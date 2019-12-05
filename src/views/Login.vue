@@ -46,7 +46,7 @@
                         }
                         this.$store.state.user.phone = res.data.data.phone;
                         this.$store.state.user.email = res.data.data.email;
-
+                        this.$store.state.user.user_id = res.data.data.id;
                     })
                 }
             }

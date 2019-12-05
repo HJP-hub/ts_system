@@ -8,10 +8,10 @@
                         <el-form :inline="true" :model="formInline" size="medium" label-position="left">
                             <div class="form_col form_fir_col">
                                 <el-form-item label="课程名称" :label-width="formLabelWidth">
-                                    <el-input v-model="formInline.textbook.course_name" class="input_width"></el-input>
+                                    <el-input v-model="formInline.textbook.courseNAME" class="input_width"></el-input>
                                 </el-form-item>
                                 <el-form-item label="教材名称" :label-width="formLabelWidth">
-                                    <el-input v-model="formInline.textbook.title_name" class="input_width"></el-input>
+                                    <el-input v-model="formInline.textbook.titleName" class="input_width"></el-input>
                                 </el-form-item>
                                 <el-form-item label="编(著)者" :label-width="formLabelWidth">
                                     <el-input v-model="formInline.textbook.author" class="input_width"></el-input>
@@ -32,7 +32,7 @@
                             </div>
                             <div class="form_col">
                                 <el-form-item label="课程学时数" :label-width="formLabelWidth">
-                                    <el-input v-model="formInline.textbook.course_time" class="input_width"></el-input>
+                                    <el-input v-model="formInline.textbook.courseTime" class="input_width"></el-input>
                                 </el-form-item>
                                 <el-form-item label="出版单位" :label-width="formLabelWidth">
                                     <el-input v-model="formInline.textbook.publisher" class="input_width"></el-input>
@@ -45,7 +45,7 @@
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="书号ISBN" :label-width="formLabelWidth">
-                                    <el-input v-model="formInline.textbook.ISBN" class="input_width"></el-input>
+                                    <el-input v-model="formInline.textbook.isbn" class="input_width"></el-input>
                                 </el-form-item>
                                 <el-form-item label="是否为近三年优质教材" :label-width="formLabelWidth">
                                     <el-switch
@@ -139,12 +139,12 @@
                         </el-card>
                         <div class="foot_form">
                             <el-form :inline="true" :model="formInline">
-                                <el-form-item label="联系电话" label-width="70px">
+                                <el-form-item label="联系电话">
                                     <el-input v-model="formInline.textbook.phone" class="input_width" placeholder="教师联系电话"></el-input>
                                 </el-form-item>
                                 <el-checkbox v-model="checked">本人已阅读申报相关说明</el-checkbox>
                                 <div class="summit_button">
-                                    <el-button type="primary" round>提交申请</el-button>
+                                    <el-button type="primary" round @click="submit">提交申请</el-button>
                                     <el-button type="info" round>保存申请</el-button>
                                 </div>
                             </el-form>
@@ -158,6 +158,7 @@
 
 <script>
     import Main from '../Main'
+    import axios from 'axios'
     export default {
         name: "ApplicationForm",
         data(){
@@ -165,17 +166,20 @@
                 formLabelWidth: '100px',
                 formInline:{
                     textbook:{
-                        course_name: '',
-                        course_time: '',
-                        title_name: '',
+                        courseNAME: '',
+                        courseTime: '',
+                        titleName: '',
                         publisher: '',
                         author: '',
                         title_date: '',
                         version: 1,
-                        ISBN: '',
+                        isbn: '',
                         title_type: '',
                         flag: '',
-                        phone: ''
+                        phone: '',
+                        status: '',
+                        classList: [],
+                        teacherId: this.$store.state.user.user_id
                     }
                 },
                 title_option:[{
@@ -241,6 +245,14 @@
                 };
                 this.$set(this.tableData[index], 'flag', false);
                 this.tableData.push(newline);
+            },
+            submit(){
+                axios.post('/api/teacher/saveclass',this.tableData)
+                    .then(res => {
+                        console.log(res);
+                        this.formInline.textbook.status = 1;
+                        this.formInline.textbook.classList = res.data.data;
+                    })
             }
         },
         components: {

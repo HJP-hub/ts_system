@@ -12,7 +12,8 @@ export default new Vuex.Store({
       sex: '',
       phone: '',
       email: '',
-      userType: ''
+      userType: '',
+      user_id: ''
     }
   },
   mutations: {
