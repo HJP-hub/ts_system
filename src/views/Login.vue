@@ -27,7 +27,25 @@
             login(){
                 axios.post('/login', this.user)
                     .then(res => {
-                        console.log(res);
+                        // console.log(res);
+                        if (res.data.data === '密码错误！') {
+                                this.$message({
+                                    message: '密码错误！',
+                                    type: 'error',
+                                    duration: 2000,
+                                    center: true,
+                                    offset: 150
+                                });
+                        }
+                        if (res.data.data === '该用户不存在') {
+                                this.$message({
+                                    message: '该用户不存在',
+                                    type: 'warning',
+                                    duration: 2000,
+                                    center: true,
+                                    offset: 150
+                                });
+                        }
                         if (res.data.data.userType === 1){
                             this.$store.state.user.userType = '教师';
                             this.$router.push('./teacher')
@@ -93,5 +111,9 @@
         min-width: 100px;
         margin-left: 20%;
         width: 60%;
+    }
+
+    .mess_alert {
+        width: 50px;
     }
 </style>
