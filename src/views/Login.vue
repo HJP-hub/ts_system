@@ -27,7 +27,7 @@
             login(){
                 axios.post('/login', this.user)
                     .then(res => {
-                        // console.log(res);
+                        console.log(res);
                         if (res.data.data === '密码错误！') {
                                 this.$message({
                                     message: '密码错误！',

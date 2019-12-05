@@ -175,7 +175,7 @@
                         version: 1,
                         isbn: '',
                         title_type: '',
-                        flag: '',
+                        flag: true,
                         phone: '',
                         status: '',
                         classList: [],
@@ -247,11 +247,16 @@
                 this.tableData.push(newline);
             },
             submit(){
-                axios.post('/api/teacher/saveclass',this.tableData)
+                axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
                         console.log(res);
                         this.formInline.textbook.status = 1;
-                        this.formInline.textbook.classList = res.data.data;
+                        this.formInline.textbook.classList = res.data;
+                        console.log(this.formInline.textbook);
+                        axios.post('/teacher/savetextbook', this.formInline.textbook)
+                            .then(res => {
+                                console.log(res);
+                            })
                     })
             }
         },
