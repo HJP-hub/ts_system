@@ -15,5 +15,14 @@ npm run serve
 npm run build
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+### 属性说明
+
+```
+userType 1 为 教师，2 为秘书
+sex 1 为 男，0 为女
+```
+
+
+

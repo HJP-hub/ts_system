@@ -11,7 +11,8 @@ export default new Vuex.Store({
       job_number: '',
       sex: '',
       phone: '',
-      email: ''
+      email: '',
+      userType: ''
     }
   },
   mutations: {

@@ -27,16 +27,19 @@
             login(){
                 axios.post('/login', this.user)
                     .then(res => {
+                        console.log(res);
                         if (res.data.data.userType === 1){
+                            this.$store.state.user.userType = '教师';
                             this.$router.push('./teacher')
                         }
                         else if (res.data.data.userType === 2){
+                            this.$store.state.user.userType = '秘书';
                             this.$router.push('./secretary')
                         }
                         this.$store.state.user.name = res.data.data.realName;
                         this.$store.state.user.age = res.data.data.age;
                         this.$store.state.user.job_number = res.data.data.jobNumber;
-                        if (res.data.data.sex === 1){
+                        if (res.data.data.sex === '1'){
                             this.$store.state.user.sex = '男';
                         }else{
                             this.$store.state.user.sex = '女';
