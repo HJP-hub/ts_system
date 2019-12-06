@@ -13,5 +13,6 @@
 <style scoped>
     #main{
         background-color: #e5e5e5;
+        height: 91vh;
     }
 </style>

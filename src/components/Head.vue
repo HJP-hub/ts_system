@@ -6,7 +6,7 @@
             </el-col>
             <el-col :span="4">
                 <div class="head_right">
-                    <span class="head_text_color">{{$store.state.user.name}}{{$store.state.user.userType}} </span>
+                    <span class="head_text_color">{{$store.state.user.realName}}{{$store.state.user.userType}} </span>
                     <el-button type="text" class="head_text_color" @click="Logout">注销</el-button>
                 </div>
             </el-col>
