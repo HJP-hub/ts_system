@@ -244,23 +244,18 @@
                 this.tableData.push(newline);
             },
             submit(formName){
-                if(!this.valid(formName)){
-                    return false;
-                }
+                this.valid(formName);
                 this.formInline.textbook.status = 2;
-                this.send_request();
             },
            save(formName) {
-               if(!this.valid(formName)){
-                   return false;
-               }
+               this.valid(formName);
                this.formInline.textbook.status = 1;
-               this.send_request();
             },
             valid(formName){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         alert('submit!');
+                        this.send_request();
                     } else {
                         return false;
                     }
