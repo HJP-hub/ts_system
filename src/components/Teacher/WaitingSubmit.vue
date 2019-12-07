@@ -5,23 +5,28 @@
                 <h1 class="title">待提交申请表</h1>
                 <el-table
                         :data="tableData"
-                        style="width: 45%; margin-top: 30px; margin-left: 28%">
-                    <el-table-column label="课程名称" width="180">
+                        style="width: 80%; margin-top: 30px; margin-left: 11%">
+                    <el-table-column label="课程名称" width="260" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{}}</span>
+                            <span style="margin-left: 10px">云计算</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称" width="180">
+                    <el-table-column label="教材名称" width="260" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{  }}</span>
+                            <span style="margin-left: 10px">云计算原理与实践</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="出版单位" width="180">
+                    <el-table-column label="出版单位" width="260" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{}}</span>
+                            <span style="margin-left: 10px">人民邮电出版社</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作">
+                    <el-table-column label="状态" width="260" align="center">
+                        <template slot-scope="scope">
+                            <span style="margin-left: 10px"><el-tag type="info">待提交</el-tag></span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
@@ -44,6 +49,22 @@
         name: "WaitingSubmit",
         components: {
             Main
+        },
+        data(){
+            return {
+                tableData: [{
+
+                },
+                {
+
+                },
+                {
+
+                },
+                {
+
+                }]
+            }
         }
     }
 </script>
