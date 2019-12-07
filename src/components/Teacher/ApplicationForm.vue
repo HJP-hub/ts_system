@@ -5,12 +5,12 @@
                 <h1 class="title">电子科技大学中山学院教材选订申请表</h1>
                 <div id="form">
                     <div id="text">
-                        <el-form :inline="true" :model="formInline" size="medium" label-position="left">
+                        <el-form :inline="true" :model="formInline" size="medium" label-position="left" :rules="rules"  ref="formInline">
                             <div class="form_col form_fir_col">
-                                <el-form-item label="课程名称" :label-width="formLabelWidth">
+                                <el-form-item label="课程名称" :label-width="formLabelWidth" prop="courseNAME">
                                     <el-input v-model="formInline.textbook.courseNAME" class="input_width"></el-input>
                                 </el-form-item>
-                                <el-form-item label="教材名称" :label-width="formLabelWidth">
+                                <el-form-item label="教材名称" :label-width="formLabelWidth" prop="titleName">
                                     <el-input v-model="formInline.textbook.titleName" class="input_width"></el-input>
                                 </el-form-item>
                                 <el-form-item label="编(著)者" :label-width="formLabelWidth">
@@ -34,7 +34,7 @@
                                 <el-form-item label="课程学时数" :label-width="formLabelWidth">
                                     <el-input v-model="formInline.textbook.courseTime" class="input_width"></el-input>
                                 </el-form-item>
-                                <el-form-item label="出版单位" :label-width="formLabelWidth">
+                                <el-form-item label="出版单位" :label-width="formLabelWidth" prop="publisher">
                                     <el-input v-model="formInline.textbook.publisher" class="input_width"></el-input>
                                 </el-form-item>
                                 <el-form-item label="出版时间" :label-width="formLabelWidth">
@@ -144,8 +144,8 @@
                                 </el-form-item>
                                 <el-checkbox v-model="checked">本人已阅读申报相关说明</el-checkbox>
                                 <div class="summit_button">
-                                    <el-button type="primary" round @click="submit">提交申请</el-button>
-                                    <el-button type="info" round>保存申请</el-button>
+                                    <el-button type="primary" round @click="submit" :disabled="!checked">提交申请</el-button>
+                                    <el-button type="info" round @click="save('formInline')" :disabled="!checked">保存申请</el-button>
                                 </div>
                             </el-form>
                         </div>
@@ -165,23 +165,9 @@
             return {
                 formLabelWidth: '100px',
                 formInline:{
-                    textbook:{
-                        courseNAME: '',
-                        courseTime: '',
-                        titleName: '',
-                        publisher: '',
-                        author: '',
-                        title_date: '',
-                        version: 1,
-                        isbn: '',
-                        title_type: '',
-                        flag: true,
-                        phone: '',
-                        status: '',
-                        classList: [],
-                        teacherId: this.$store.state.user.user_id
-                    }
+                    textbook: this.$store.state.TAppForm.textbook
                 },
+                tableData: this.$store.state.TAppForm.tableData,
                 title_option:[{
                     value: 'a',
                     label: '教育部国家级规划教材'
@@ -198,14 +184,6 @@
                     value: 'e',
                     label: '无'
                 }],
-                tableData: [{
-                    grade:'',
-                    subject: '',
-                    number: '',
-                    classType:'',
-                    date: '',
-                    flag: true
-                }],
                 classType_option:[{
                     value: '必修',
                     label: '必修'
@@ -217,7 +195,19 @@
                     '出版日期需严格按照范例格式填写，经过多版修订的教材填写最近一次出版的日期。',
                     '仅供教师使用的教师参考用书另表征订，并标明教师用书字样。'
                 ],
-                checked: false
+                checked: false,
+                rules:{
+                    courseNAME: [
+                        { required: true,  message: '请输入课程名称', trigger: 'blur' },
+                    ],
+                    titleName: [
+                        { required: true, message: '请输入教材名称', trigger: 'blur' }
+                    ],
+                    publisher: [
+                        { required: true, message: '请输入出版单位', trigger: 'blur' }
+                    ],
+
+                }
             }
         },
         methods: {
@@ -247,6 +237,7 @@
                 this.tableData.push(newline);
             },
             submit(){
+                this.textbook.teacherId = this.$store.state.user.user.id;
                 axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
                         console.log(res);
@@ -258,6 +249,16 @@
                                 console.log(res);
                             })
                     })
+            },
+           save(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
             }
         },
         components: {
