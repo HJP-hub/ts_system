@@ -15,7 +15,7 @@
                 <el-menu-item index="unchecked" :route="{name: 'unchecked'}"><i class="el-icon-document-copy"></i>未审核</el-menu-item>
                 <el-menu-item index="history" :route="{name: 'history'}"><i class="el-icon-box"></i>历史记录</el-menu-item>
             </el-submenu>
-            <el-menu-item @click="$store.state.user.visible=true"><i class="el-icon-user"></i>个人资料</el-menu-item>
+            <el-menu-item @click="$store.state.user.other.visible=true"><i class="el-icon-user"></i>个人资料</el-menu-item>
         </el-menu>
         <UserDialog></UserDialog>
     </el-aside>
