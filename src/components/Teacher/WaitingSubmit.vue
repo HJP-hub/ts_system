@@ -8,22 +8,25 @@
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
                     <el-table-column label="课程名称" width="260" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">云计算</span>
+                            <span style="margin-left: 10px">{{scope.row.class_name}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="教材名称" width="260" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">云计算原理与实践</span>
+                            <span style="margin-left: 10px">{{scope.row.book_name}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="出版单位" width="260" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">人民邮电出版社</span>
+                            <span style="margin-left: 10px">{{scope.row.publisher}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="状态" width="260" align="center">
+                    <el-table-column label="保存时间" width="260" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px"><el-tag type="info">待提交</el-tag></span>
+                            <el-tag type="info">
+                            <i class="el-icon-time"></i>
+                            <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                            </el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center">
@@ -53,18 +56,60 @@
         data(){
             return {
                 tableData: [{
-
+                    class_name: '云计算',
+                    book_name: '云计算原理与实践',
+                    publisher: '人民邮电出版社',
+                    date: '2019-12-7'
                 },
                 {
-
+                    class_name: '云计算',
+                    book_name: '云计算原理与实践',
+                    publisher: '人民邮电出版社',
+                    date: '2019-12-7'
                 },
                 {
-
+                    class_name: '云计算',
+                    book_name: '云计算原理与实践',
+                    publisher: '人民邮电出版社',
+                    date: '2019-12-7'
                 },
                 {
-
+                    class_name: '云计算',
+                    book_name: '云计算原理与实践',
+                    publisher: '人民邮电出版社',
+                    date: '2019-12-7'
                 }]
             }
+        },
+        methods: {
+            handleEdit(index, row) {
+                console.log(index, row);
+            },
+            handleDelete(index){
+                this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    if (this.tableData.length !== 1){
+                        this.tableData.splice(index, 1)
+                    }
+                    if (this.tableData[this.tableData.length - 1].flag !== true){
+                        this.tableData[this.tableData.length - 1].flag = true
+                    }
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+
+            },
+
         }
     }
 </script>
