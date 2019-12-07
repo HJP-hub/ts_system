@@ -32,7 +32,7 @@
                             </div>
                             <div class="form_col">
                                 <el-form-item label="课程学时数" :label-width="formLabelWidth">
-                                    <el-input v-model="formInline.textbook.courseTime" class="input_width"></el-input>
+                                    <el-input v-model="formInline.textbook.courseTime" class="input_width" type="number" min="0"></el-input>
                                 </el-form-item>
                                 <el-form-item label="出版单位" :label-width="formLabelWidth" prop="publisher">
                                     <el-input v-model="formInline.textbook.publisher" class="input_width"></el-input>
@@ -79,14 +79,14 @@
                                 </el-table-column>
                                 <el-table-column
                                         label="人数"
-                                        width="80">
+                                        width="100">
                                     <template slot-scope="scope">
-                                        <el-input v-model="scope.row.number"></el-input>
+                                        <el-input v-model="scope.row.number" type="number" min="0"></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
                                         label="必(选)修"
-                                        width="140">
+                                        width="120">
                                     <template slot-scope="scope">
                                         <el-select v-model="scope.row.classType" placeholder="请选择">
                                             <el-option
@@ -144,7 +144,7 @@
                                 </el-form-item>
                                 <el-checkbox v-model="checked">本人已阅读申报相关说明</el-checkbox>
                                 <div class="summit_button">
-                                    <el-button type="primary" round @click="submit" :disabled="!checked">提交申请</el-button>
+                                    <el-button type="primary" round @click="submit('formInline')" :disabled="!checked">提交申请</el-button>
                                     <el-button type="info" round @click="save('formInline')" :disabled="!checked">保存申请</el-button>
                                 </div>
                             </el-form>
@@ -162,6 +162,13 @@
     export default {
         name: "ApplicationForm",
         data(){
+            const validateNull = (rule, value, callback) => {
+                if(this.formInline.textbook[rule.field] === ''){
+                    callback("请输入课程名称");
+                } else {
+                    callback();
+                }
+            };
             return {
                 formLabelWidth: '100px',
                 formInline:{
@@ -198,13 +205,13 @@
                 checked: false,
                 rules:{
                     courseNAME: [
-                        { required: true,  message: '请输入课程名称', trigger: 'blur' },
+                        { required: true,  validator: validateNull, trigger: 'blur' },
                     ],
                     titleName: [
-                        { required: true, message: '请输入教材名称', trigger: 'blur' }
+                        { required: true, validator: validateNull, trigger: 'blur' }
                     ],
                     publisher: [
-                        { required: true, message: '请输入出版单位', trigger: 'blur' }
+                        { required: true, validator: validateNull, trigger: 'blur' }
                     ],
 
                 }
@@ -236,29 +243,40 @@
                 this.$set(this.tableData[index], 'flag', false);
                 this.tableData.push(newline);
             },
-            submit(){
-                this.textbook.teacherId = this.$store.state.user.user.id;
-                axios.post('/teacher/saveclass',this.tableData)
-                    .then(res => {
-                        console.log(res);
-                        this.formInline.textbook.status = 1;
-                        this.formInline.textbook.classList = res.data;
-                        console.log(this.formInline.textbook);
-                        axios.post('/teacher/savetextbook', this.formInline.textbook)
-                            .then(res => {
-                                console.log(res);
-                            })
-                    })
+            submit(formName){
+                if(!this.valid(formName)){
+                    return false;
+                }
+                this.formInline.textbook.status = 2;
+                this.send_request();
             },
            save(formName) {
+               if(!this.valid(formName)){
+                   return false;
+               }
+               this.formInline.textbook.status = 1;
+               this.send_request();
+            },
+            valid(formName){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         alert('submit!');
                     } else {
-                        console.log('error submit!!');
                         return false;
                     }
                 });
+            },
+            send_request(){
+                this.formInline.textbook.teacherId = this.$store.state.user.user.id;
+                axios.post('/teacher/saveclass',this.tableData)
+                    .then(res => {
+                        console.log('saveclass:',res);
+                        this.formInline.textbook.classList = res.data;
+                        axios.post('/teacher/savetextbook', this.formInline.textbook)
+                            .then(res => {
+                                console.log('savetextbook',res);
+                            })
+                    })
             }
         },
         components: {

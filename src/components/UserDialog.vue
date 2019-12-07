@@ -16,7 +16,14 @@
                 <el-input v-model="formInline.user.jobNumber" class="dialog_width"  :disabled="true">{{formInline.user.jobNumber}}</el-input>
             </el-form-item>
             <el-form-item label="学院" :label-width="formLabelWidth">
-                <el-input v-model="formInline.user.college" class="dialog_width">{{formInline.user.college}}</el-input>
+                <el-select v-model="formInline.user.college" placeholder="请选择">
+                    <el-option
+                            v-for="item in college_options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
                 <el-input v-model="formInline.user.email" class="dialog_width">{{formInline.user.email}}</el-input>
@@ -62,6 +69,34 @@
             return {
                 formLabelWidth: '100px',
                 formInline:this.$store.state.user,
+                college_options:[{
+                    value: '电子信息学院',
+                    label: '电子信息学院'
+                }, {
+                    value: '机电工程学院',
+                    label: '机电工程学院'
+                }, {
+                    value: '计算机学院',
+                    label: '计算机学院'
+                }, {
+                    value: '材料与食品学院',
+                    label: '材料与食品学院'
+                }, {
+                    value: '人文社会科学学院',
+                    label: '人文社会科学学院'
+                }, {
+                    value: '管理学院',
+                    label: '管理学院'
+                }, {
+                    value: '经贸学院',
+                    label: '经贸学院'
+                }, {
+                    value: '外国语学院',
+                    label: '外国语学院'
+                }, {
+                    value: '艺术设计学院',
+                    label: '艺术设计学院'
+                }],
                 rules: {
                     email: [
                         { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
