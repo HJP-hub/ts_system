@@ -164,7 +164,13 @@
         data(){
             const validateNull = (rule, value, callback) => {
                 if(this.formInline.textbook[rule.field] === ''){
-                    callback("请输入课程名称");
+                    if (rule.field === 'courseNAME'){
+                        callback("请输入课程名称");
+                    }else if(rule.field === 'titleName'){
+                        callback("请输入教材名称");
+                    }else if(rule.field === 'publisher'){
+                        callback("请输入出版社名称");
+                    }
                 } else {
                     callback();
                 }
@@ -172,9 +178,31 @@
             return {
                 formLabelWidth: '100px',
                 formInline:{
-                    textbook: this.$store.state.TAppForm.textbook
+                    textbook: {
+                        courseNAME: '',
+                        courseTime: '',
+                        titleName: '',
+                        publisher: '',
+                        author: '',
+                        title_date: '',
+                        version: 1,
+                        isbn: '',
+                        title_type: '',
+                        flag: true,
+                        phone: '',
+                        status: '',
+                        classList: [],
+                        teacherId: ''
+                    }
                 },
-                tableData: this.$store.state.TAppForm.tableData,
+                tableData: [{
+                    grade:'',
+                    subject: '',
+                    number: '',
+                    classType:'',
+                    date: '',
+                    flag: true
+                }],
                 title_option:[{
                     value: 'a',
                     label: '教育部国家级规划教材'
@@ -287,7 +315,7 @@
                 });
             },
             send_request(){
-                this.formInline.textbook.teacherId = this.$store.state.user.user.id;
+                this.formInline.textbook.teacherId = JSON.parse(sessionStorage.getItem("user")).id;
                 axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
                         console.log('saveclass:',res);

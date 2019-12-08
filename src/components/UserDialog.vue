@@ -1,7 +1,7 @@
 <template>
     <el-dialog
             title="用户信息"
-            :visible.sync="$store.state.user.other.visible"
+            :visible.sync="CVisible.PVisible"
             width="36%"
             center>
         <el-form :inline="true" :model="formInline" :rules="rules" ref="formInline">
@@ -39,7 +39,7 @@
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
-                <el-button @click="$store.state.user.other.visible = false" class="dialog_btn">取 消</el-button>
+                <el-button @click="CVisible.PVisible = false" class="dialog_btn">取 消</el-button>
                 <el-button type="primary" @click="updateInfo" class="dialog_btn">保 存</el-button>
             </span>
     </el-dialog>
@@ -52,6 +52,7 @@
         mounted(){
             this.formInline.user = JSON.parse(sessionStorage.getItem("user"));
         },
+        props: ['CVisible'],
         data(){
             const validatePass = (rule, value, callback) => {
                 this.$refs.formInline.validateField('checkPass');
@@ -76,7 +77,7 @@
                     other:{
                         checkPass: '',
                         pass: ""
-                    }
+                    },
                 },
                 college_options:[{
                     value: '电子信息学院',
@@ -116,7 +117,7 @@
                     checkPass: [
                         { validator: validatePass2, trigger: 'blur' }
                     ],
-                }
+                },
             }
         },
         methods: {
@@ -128,9 +129,9 @@
                     .then(res => {
                         sessionStorage.setItem("user",JSON.stringify(res.data.data))
                     });
-                this.$store.state.user.other.visible = false;
+                this.CVisible.PVisible = false;
             }
-        }
+        },
     }
 </script>
 

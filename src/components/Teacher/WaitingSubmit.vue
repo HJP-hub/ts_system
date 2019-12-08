@@ -56,13 +56,15 @@
             Main
         },
         mounted(){
-            axios.get('/teacher' + '/' + this.$store.state.user.user.id + '/' + 1)
+            this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
+            axios.get('/teacher' + '/' + this.user_id + '/' + 1)
                 .then(res =>{
                     this.tableData = res.data.data;
             })
         },
         data(){
             return {
+                user_id: '',
                 tableData: ''
             }
         },
