@@ -38,6 +38,7 @@
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
+                                    type="primary"
                                     @click="handleLook(scope.$index, scope.row)">查看</el-button>
                             <el-button
                                     size="mini"
@@ -47,6 +48,38 @@
                     </el-table-column>
                 </el-table>
             </div>
+            <el-dialog
+                    title="申请表信息"
+                    :visible.sync="dialogVisible"
+                    width="40%"
+                    style="min-width: 586px"
+                    center
+                    :before-close="handleClose">
+
+                <el-row>
+                    <el-col :span="10" offset="4"><div class="applyTableShow">
+                    <p class="marginTop">课程名称: {{tableData[0].className}}</p>
+                    <p class="marginTop">教材名称:</p>
+                    <p class="marginTop">编（著）者:</p>
+                    <p class="marginTop">版次:</p>
+                    <p class="marginTop">教材类型:</p>
+                    <p class="marginTop">教师:</p>
+                    <p class="marginTop">申请时间:</p>
+                    <p class="marginTop">审评意见:</p>
+                    </div></el-col>
+                    <el-col :span="10"><div class="applyTableShow" >
+                    <p class="marginTop">课程学时数: </p>
+                    <p class="marginTop">出版单位:</p>
+                    <p class="marginTop">出版时间:</p>
+                    <p class="marginTop">书号ISBN:</p>
+                    <p class="marginTop">是否为近三年优质教材:</p>
+                    <p class="marginTop">联系电话:</p>
+                    <p class="marginTop">审核时间:</p>
+                    <p class="marginTop">审核人:</p>
+                    </div></el-col>
+                </el-row>
+
+            </el-dialog>
         </template>
     </Main>
 </template>
@@ -60,30 +93,32 @@
         },
         data() {
             return {
+                a:'hello',
+                dialogVisible: false,
                     tableData: [{
-                        className: '云计算',
-                        bookName: '云计算原理与实践',
+                        className: '云计算1',
+                        bookName: '云计算原理与实践1',
                         publicDate: '2019-12-8',
                         applyDate: '2019-12-8',
                         disposeDate:'2019-12-8'
                     },
                     {
-                        className: '云计算',
-                        bookName: '云计算原理与实践',
+                        className: '云计算2',
+                        bookName: '云计算原理与实践2',
                         publicDate: '2019-12-8',
                         applyDate: '2019-12-8',
                         disposeDate:'2019-12-8'
                     },
                     {
-                        className: '云计算',
-                        bookName: '云计算原理与实践',
+                        className: '云计算3',
+                        bookName: '云计算原理与实践3',
                         publicDate: '2019-12-8',
                         applyDate: '2019-12-8',
                         disposeDate:'2019-12-8'
                     },
                     {
-                        className: '云计算',
-                        bookName: '云计算原理与实践',
+                        className: '云计算4',
+                        bookName: '云计算原理与实践4',
                         publicDate: '2019-12-8',
                         applyDate: '2019-12-8',
                         disposeDate:'2019-12-8'
@@ -91,8 +126,16 @@
             }
         },
         methods: {
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {});
+            },
             handleLook(index, row) {
-                console.log(index, row);
+                /*console.log(index, row);*/
+                this.dialogVisible = true;
             },
             handleDelete(index){
                 this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
@@ -131,4 +174,12 @@
         font-weight: 700;
         color: #565656;
     }
+    .applyTableShow {
+        color: #838383;
+        font-size: 15px;
+    }
+    .marginTop {
+        margin-top: 30px;
+    }
+
 </style>
