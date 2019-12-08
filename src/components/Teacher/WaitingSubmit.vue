@@ -3,6 +3,13 @@
         <template>
             <div>
                 <h1 class="title">待提交申请表</h1>
+                <div class="tip">
+                    <el-tag >
+                        <i class="el-icon-info"></i>
+                        <span >{{teacher}}教师，您共有{{table_num}}张待提交的申请表，请尽快编辑完成它们，或者删除它们。</span>
+                    </el-tag>
+                </div>
+
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
@@ -55,6 +62,8 @@
         },
         data(){
             return {
+                teacher: '张三',
+                table_num: 6,
                 tableData: [{
                     class_name: '云计算',
                     book_name: '云计算原理与实践',
@@ -121,6 +130,12 @@
         text-align: center;
         font-family: '华文行楷';
         font-weight: 700;
+        color: #565656;
+    }
+    .tip {
+        text-align: center;
+        margin-top: 30px;
+        margin-bottom: 10px;
         color: #565656;
     }
 </style>
