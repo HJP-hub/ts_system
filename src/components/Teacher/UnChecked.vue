@@ -6,23 +6,23 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="课程名称" width="220" align="center">
+                    <el-table-column label="课程名称" width="240" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.className}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称" width="220" align="center">
+                    <el-table-column label="教材名称" width="240" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.bookName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="出版时间" width="220" align="center">
+                    <el-table-column label="出版时间" width="240" align="center">
                         <template slot-scope="scope">
                             <i class="el-icon-time"></i>
                             <span style="margin-left: 10px">{{ scope.row.publicDate }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="申请时间" width="220" align="center">
+                    <el-table-column label="申请时间" width="240" align="center">
                         <template slot-scope="scope">
                             <i class="el-icon-time"></i>
                             <span style="margin-left: 10px">{{ scope.row.applyDate }}</span>
