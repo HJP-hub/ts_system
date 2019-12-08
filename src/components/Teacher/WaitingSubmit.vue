@@ -3,6 +3,12 @@
         <template>
             <div>
                 <h1 class="title">待提交申请表</h1>
+                <div class="tip">
+                    <el-tag >
+                        <i class="el-icon-s-flag"></i>
+                        <span>{{teachername}}教师，您共有{{tablenum}}张待提交的申请表，请尽快编辑完成它们，或者删除它们</span>
+                    </el-tag>
+                </div>
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
@@ -119,5 +125,10 @@
     }
     .el-date-editor.el-input{
         width: 100%;
+    }
+    .tip {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        text-align: center;
     }
 </style>
