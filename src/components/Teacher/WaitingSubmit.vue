@@ -3,6 +3,12 @@
         <template>
             <div>
                 <h1 class="title">待提交申请表</h1>
+                <div class="tip">
+                    <el-tag >
+                        <i class="el-icon-s-flag"></i>
+                        <span>{{teachername}}教师，您共有{{tablenum}}张待提交的申请表，请尽快编辑完成它们，或者删除它们</span>
+                    </el-tag>
+                </div>
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
@@ -23,15 +29,10 @@
                     </el-table-column>
                     <el-table-column label="保存时间" width="160" align="center">
                         <template slot-scope="scope">
-                            <el-date-picker
-                                    v-model="scope.row.date"
-                                    type="date"
-                                    readonly>
-                            </el-date-picker>
-<!--                            <el-tag type="info">-->
-<!--                            <i class="el-icon-time"></i>-->
-<!--                            <span style="margin-left: 10px">{{ scope.row.date }}</span>-->
-<!--                            </el-tag>-->
+                            <el-tag type="info">
+                            <i class="el-icon-time"></i>
+                            <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                            </el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center">
@@ -53,22 +54,39 @@
 
 <script>
     import Main from '../Main'
-    import axios from 'axios'
     export default {
         name: "WaitingSubmit",
         components: {
             Main
         },
-        created(){
-            axios.get('/teacher' + '/' + this.$store.state.user.user.id + '/' + 1)
-                .then(res =>{
-                console.log(res);
-                    this.$store.dispatch('ASetWaitSub', res)
-            })
-        },
         data(){
             return {
-                tableData: this.$store.state.WaitSub
+                teachername: '张三',
+                tablenum: 3,
+                tableData: [{
+                    courseName: '云计算',
+                    titleName: '云计算原理与实践',
+                    publisher: '人民邮电出版社',
+                    date: '2019-12-7'
+                },
+                {
+                    courseName: '云计算',
+                    titleName: '云计算原理与实践',
+                    publisher: '人民邮电出版社',
+                    date: '2019-12-7'
+                },
+                {
+                    courseName: '云计算',
+                    titleName: '云计算原理与实践',
+                    publisher: '人民邮电出版社',
+                    date: '2019-12-7'
+                },
+                {
+                    courseName: '云计算',
+                    titleName: '云计算原理与实践',
+                    publisher: '人民邮电出版社',
+                    date: '2019-12-7'
+                }]
             }
         },
         methods: {
@@ -81,26 +99,16 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    axios.delete('/teacher/' + this.tableData[index].id)
-                        .then(res => {
-                            if (this.tableData.length !== 1){
-                                this.tableData.splice(index, 1);
-                                this.$store.state.WaitSub.splice(index, 1);
-                            }
-                            if (this.tableData[this.tableData.length - 1].flag !== true){
-                                this.tableData[this.tableData.length - 1].flag = true
-                            }
-                            this.$message({
-                                type: 'success',
-                                message: '删除成功!'
-                            });
-                        }).catch(error =>{
-                        this.$message({
-                            type: 'success',
-                            message: '删除失败!'
-                        });
-                    })
-
+                    if (this.tableData.length !== 1){
+                        this.tableData.splice(index, 1)
+                    }
+                    if (this.tableData[this.tableData.length - 1].flag !== true){
+                        this.tableData[this.tableData.length - 1].flag = true
+                    }
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -123,7 +131,9 @@
         font-weight: 700;
         color: #565656;
     }
-    .el-date-editor.el-input{
-        width: 100%;
+    .tip {
+        margin-top: 30px;
+        margin-bottom: 30px;
+        text-align: center;
     }
 </style>
