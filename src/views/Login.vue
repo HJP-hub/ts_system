@@ -46,13 +46,13 @@
                                     offset: 150
                                 });
                         }
-                        this.$store.commit('setUser', res);
                         if (res.data.data.userType === 1){
                             this.$router.push('./teacher')
                         }
                         else if (res.data.data.userType === 2){
                             this.$router.push('./secretary')
                         }
+                        sessionStorage.setItem("user",JSON.stringify(res.data.data))
                     })
                 }
             }

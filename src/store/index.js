@@ -50,7 +50,6 @@ export default new Vuex.Store({
           flag: true
         }]
       },
-      WaitSub:[],
   },
   mutations: {
     setUser(state, res){
@@ -70,14 +69,8 @@ export default new Vuex.Store({
       state.user.user.userName = res.data.data.userName;
       state.user.user.userPassword = res.data.data.userPassword;
     },
-    setWaitSub(state, res){
-      state.WaitSub = res.data.data;
-    }
   },
   actions: {
-    ASetWaitSub(context, res){
-      context.commit('setWaitSub', res);
-    }
   },
   modules: {
   }

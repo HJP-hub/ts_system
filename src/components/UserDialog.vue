@@ -49,6 +49,9 @@
     import axios from 'axios'
     export default {
         name: "UserDialog",
+        mounted(){
+            this.formInline.user = JSON.parse(sessionStorage.getItem("user"));
+        },
         data(){
             const validatePass = (rule, value, callback) => {
                 this.$refs.formInline.validateField('checkPass');
@@ -68,7 +71,13 @@
             };
             return {
                 formLabelWidth: '100px',
-                formInline:this.$store.state.user,
+                formInline: {
+                    user: '',
+                    other:{
+                        checkPass: '',
+                        pass: ""
+                    }
+                },
                 college_options:[{
                     value: '电子信息学院',
                     label: '电子信息学院'
@@ -115,15 +124,9 @@
                 if (this.formInline.other.pass !== ''){
                     this.formInline.user.userPassword = this.formInline.other.pass;
                 }
-                if (this.formInline.user.userType === '教师'){
-                    this.formInline.user.userType = 1;
-                }else{
-                    this.formInline.user.userType = 2
-                }
                 axios.put('/teacher',this.formInline.user)
                     .then(res => {
-                        console.log(res);
-                        this.$store.commit('setUser', res);
+                        sessionStorage.setItem("user",JSON.stringify(res.data.data))
                     });
                 this.$store.state.user.other.visible = false;
             }

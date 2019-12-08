@@ -6,7 +6,7 @@
             </el-col>
             <el-col :span="4">
                 <div class="head_right">
-                    <span class="head_text_color">{{$store.state.user.user.realName}}{{$store.state.user.user.userType}} </span>
+                    <span class="head_text_color">{{realName}}&nbsp;{{userType}} </span>
                     <el-button type="text" class="head_text_color" @click="Logout">注销</el-button>
                 </div>
             </el-col>
@@ -17,8 +17,14 @@
 <script>
     export default {
         name: "Head",
+        mounted(){
+            this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
+            this.userType = JSON.parse(sessionStorage.getItem("user")).userType===1?'教师':'秘书';
+        },
         data(){
             return {
+                realName: '',
+                userType: ''
             }
         },
         methods: {

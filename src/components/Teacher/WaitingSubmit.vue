@@ -28,10 +28,6 @@
                                     type="date"
                                     readonly>
                             </el-date-picker>
-<!--                            <el-tag type="info">-->
-<!--                            <i class="el-icon-time"></i>-->
-<!--                            <span style="margin-left: 10px">{{ scope.row.date }}</span>-->
-<!--                            </el-tag>-->
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center">
@@ -59,16 +55,15 @@
         components: {
             Main
         },
-        created(){
+        mounted(){
             axios.get('/teacher' + '/' + this.$store.state.user.user.id + '/' + 1)
                 .then(res =>{
-                console.log(res);
-                    this.$store.dispatch('ASetWaitSub', res)
+                    this.tableData = res.data.data;
             })
         },
         data(){
             return {
-                tableData: this.$store.state.WaitSub
+                tableData: ''
             }
         },
         methods: {
@@ -85,7 +80,6 @@
                         .then(res => {
                             if (this.tableData.length !== 1){
                                 this.tableData.splice(index, 1);
-                                this.$store.state.WaitSub.splice(index, 1);
                             }
                             if (this.tableData[this.tableData.length - 1].flag !== true){
                                 this.tableData[this.tableData.length - 1].flag = true
