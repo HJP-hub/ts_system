@@ -8,7 +8,7 @@
                         <el-form :inline="true" :model="formInline" size="medium" label-position="left" :rules="rules"  ref="formInline">
                             <div class="form_col form_fir_col">
                                 <el-form-item label="课程名称" :label-width="formLabelWidth" prop="courseNAME">
-                                    <el-input v-model="formInline.textbook.courseNAME" class="input_width"></el-input>
+                                    <el-input v-model="formInline.textbook.courseName" class="input_width"></el-input>
                                 </el-form-item>
                                 <el-form-item label="教材名称" :label-width="formLabelWidth" prop="titleName">
                                     <el-input v-model="formInline.textbook.titleName" class="input_width"></el-input>
@@ -20,7 +20,7 @@
                                     <el-input-number v-model="formInline.textbook.version" :min="1" :max="20"></el-input-number>
                                 </el-form-item>
                                 <el-form-item label="教材类型" :label-width="formLabelWidth">
-                                    <el-select v-model="formInline.textbook.title_type" placeholder="请选择">
+                                    <el-select v-model="formInline.textbook.titleType" placeholder="请选择">
                                         <el-option
                                                 v-for="item in title_option"
                                                 :key="item.value"
@@ -39,7 +39,7 @@
                                 </el-form-item>
                                 <el-form-item label="出版时间" :label-width="formLabelWidth">
                                     <el-date-picker
-                                            v-model="formInline.textbook.title_date"
+                                            v-model="formInline.textbook.titleDate"
                                             type="month"
                                             placeholder="201X年X月">
                                     </el-date-picker>
@@ -161,6 +161,30 @@
     import axios from 'axios'
     export default {
         name: "ApplicationForm",
+        mounted(){
+            this.id = this.$route.params.id;
+            if(this.id !== undefined){
+                axios.get('teacher/findtextbook/' + this.id)
+                    .then(res => {
+                        console.log('update', res);
+                        this.formInline.textbook = res.data.data.textbook;
+                        this.formInline.textbook.flag = this.formInline.textbook.flag === 'true';
+                        this.formInline.textbook.id = this.id;
+                        this.tableData = res.data.data.class;
+                        this.tableData[this.tableData.length-1].flag = true;
+                        if (this.tableData.length === 0){
+                            this.tableData = [{
+                                grade:'',
+                                subject: '',
+                                number: '',
+                                classType:'',
+                                date: '',
+                                flag: true
+                            }];
+                        }
+                    })
+            }
+        },
         data(){
             const validateNull = (rule, value, callback) => {
                 if(this.formInline.textbook[rule.field] === ''){
@@ -177,17 +201,18 @@
             };
             return {
                 formLabelWidth: '100px',
+                id: '',
                 formInline:{
                     textbook: {
-                        courseNAME: '',
+                        courseName: '',
                         courseTime: '',
                         titleName: '',
                         publisher: '',
                         author: '',
-                        title_date: '',
+                        titleDate: '',
                         version: 1,
                         isbn: '',
-                        title_type: '',
+                        titleType: '',
                         flag: true,
                         phone: '',
                         status: '',
@@ -260,7 +285,7 @@
                 }
             },
             handleaddLine(index){
-                var newline = {
+                const newline = {
                     grade:'',
                     subject: '',
                     number: '',
@@ -296,7 +321,11 @@
                                 message: '保存成功'
                             });
                         }
-                        this.send_request();
+                        if (this.id === undefined){
+                            this.send_create_request();
+                        }else{
+                            this.send_update_request()
+                        }
                     } else {
                         if(flag === 0) {
                             this.$message({
@@ -314,15 +343,27 @@
                     }
                 });
             },
-            send_request(){
+            send_create_request(){
                 this.formInline.textbook.teacherId = JSON.parse(sessionStorage.getItem("user")).id;
                 axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
-                        console.log('saveclass:',res);
+                        console.log('create_class:',res);
                         this.formInline.textbook.classList = res.data;
                         axios.post('/teacher/savetextbook', this.formInline.textbook)
                             .then(res => {
-                                console.log('savetextbook',res);
+                                console.log('create_textbook',res);
+                            })
+                    })
+            },
+            send_update_request(){
+                this.formInline.textbook.teacherId = JSON.parse(sessionStorage.getItem("user")).id;
+                axios.post('/teacher/saveclass',this.tableData)
+                    .then(res => {
+                        console.log('update_class:',res);
+                        this.formInline.textbook.classList = res.data;
+                        axios.put('/teacher/textbook', this.formInline.textbook)
+                            .then(res => {
+                                console.log('update_textbook',res);
                             })
                     })
             }

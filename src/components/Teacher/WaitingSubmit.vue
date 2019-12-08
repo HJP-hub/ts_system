@@ -66,19 +66,19 @@
             axios.get('/teacher' + '/' + this.user_id + '/' + 1)
                 .then(res =>{
                     this.tableData = res.data.data;
-            })
+            });
             this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         data(){
             return {
                 user_id: '',
-                tableData: '',
+                tableData: [],
                 realName: ''
             }
         },
         methods: {
             handleEdit(index, row) {
-                console.log(index, row);
+                this.$router.push('applicationform/' + this.tableData[index].id)
             },
             handleDelete(index){
                 this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
