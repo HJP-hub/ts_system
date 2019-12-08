@@ -244,23 +244,44 @@
                 this.tableData.push(newline);
             },
             submit(formName){
-                this.valid(formName, 1);
+                this.valid(formName, 0);
                 this.formInline.textbook.status = 2;
+
             },
-           save(formName) {
-               this.valid(formName, 0);
+            save(formName) {
+               this.valid(formName, 1);
                this.formInline.textbook.status = 1;
             },
             valid(formName, flag){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        if (flag === 1){
-                            alert('submit!');
-                        }else{
-                            alert('save!');
+                       /* alert('submit!');*/
+                        if(flag === 0) {
+                            this.$message({
+                                type: 'success',
+                                message: '提交成功'
+                            });
+                        }
+                        else {
+                            this.$message({
+                                type: 'success',
+                                message: '保存成功'
+                            });
                         }
                         this.send_request();
                     } else {
+                        if(flag === 0) {
+                            this.$message({
+                                type: 'error',
+                                message: '提交失败'
+                            });
+                        }
+                        else {
+                            this.$message({
+                                type: 'error',
+                                message: '保存失败'
+                            });
+                        }
                         return false;
                     }
                 });
