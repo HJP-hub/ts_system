@@ -4,9 +4,9 @@
             <div>
                 <h1 class="title">待提交申请表</h1>
                 <div class="tip">
-                    <el-tag >
+                    <el-tag size="medium">
                         <i class="el-icon-s-flag"></i>
-                        <span>{{teachername}}教师，您共有{{tablenum}}张待提交的申请表，请尽快编辑完成它们，或者删除它们</span>
+                        <span>{{realName}}教师，您共有{{tableData.length}}张待提交的申请表，请尽快编辑完成它们，或者删除它们</span>
                     </el-tag>
                 </div>
                 <el-table
@@ -67,11 +67,13 @@
                 .then(res =>{
                     this.tableData = res.data.data;
             })
+            this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         data(){
             return {
                 user_id: '',
-                tableData: ''
+                tableData: '',
+                realName: ''
             }
         },
         methods: {
@@ -130,5 +132,10 @@
         margin-top: 30px;
         margin-bottom: 30px;
         text-align: center;
+    }
+    .tip .el-tag{
+        font-size: 20px;
+        height: 40px;
+        line-height: 40px;
     }
 </style>
