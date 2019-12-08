@@ -244,17 +244,21 @@
                 this.tableData.push(newline);
             },
             submit(formName){
-                this.valid(formName);
+                this.valid(formName, 1);
                 this.formInline.textbook.status = 2;
             },
            save(formName) {
-               this.valid(formName);
+               this.valid(formName, 0);
                this.formInline.textbook.status = 1;
             },
-            valid(formName){
+            valid(formName, flag){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        if (flag === 1){
+                            alert('submit!');
+                        }else{
+                            alert('save!');
+                        }
                         this.send_request();
                     } else {
                         return false;
