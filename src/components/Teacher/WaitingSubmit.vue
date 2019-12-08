@@ -137,5 +137,6 @@
         font-size: 20px;
         height: 40px;
         line-height: 40px;
+        font-family: '华文彩云';
     }
 </style>
