@@ -5,33 +5,44 @@
                 <h1 class="title">已审核申请表</h1>
                 <el-table
                         :data="tableData"
-                        style="width: 80%; margin-top: 30px; margin-left: 11%">
+                        style="width: 85%; margin-top: 30px; margin-left: 8%">
                     <el-table-column label="课程名称" width="210" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{scope.row.className}}</span>
+                            <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="教材名称" width="210" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{scope.row.bookName}}</span>
+                            <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="出版时间" width="210" align="center">
+
+                    <el-table-column label="出版时间" width="230" align="center">
                         <template slot-scope="scope">
-                                <i class="el-icon-time"></i>
-                                <span style="margin-left: 10px">{{ scope.row.publicDate }}</span>
+                            <el-date-picker
+                                    v-model="scope.row.titleDate"
+                                    type="date"
+                                    readonly>
+                            </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="申请时间" width="210" align="center">
+
+                    <el-table-column label="申请时间" width="230" align="center">
                         <template slot-scope="scope">
-                                <i class="el-icon-time"></i>
-                                <span style="margin-left: 10px">{{ scope.row.applyDate }}</span>
+                            <el-date-picker
+                                    v-model="scope.row.date"
+                                    type="date"
+                                    readonly>
+                            </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="处理时间" width="210" align="center">
+                    <el-table-column label="处理时间" width="230" align="center">
                         <template slot-scope="scope">
-                                <i class="el-icon-time"></i>
-                                <span style="margin-left: 10px">{{ scope.row.disposeDate }}</span>
+                            <el-date-picker
+                                    v-model="scope.row.reviewDate"
+                                    type="date"
+                                    readonly>
+                            </el-date-picker>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center">
@@ -58,7 +69,7 @@
 
                 <el-row>
                     <el-col :span="10" offset="4"><div class="applyTableShow">
-                    <p class="marginTop">课程名称: {{tableData[0].className}}</p>
+                    <p class="marginTop">课程名称: </p>
                     <p class="marginTop">教材名称:</p>
                     <p class="marginTop">编（著）者:</p>
                     <p class="marginTop">版次:</p>
@@ -118,19 +129,23 @@
                     <el-col :span="10" offset="4">
                         <div class="applyTableShow">
                             <p class="marginTop">教师:</p>
-                            <p class="marginTop">申请时间:</p>
-                            <p class="marginTop">审评意见:</p>
+                            <div>
+                                <p class="marginTop">申请时间:</p>
+                                <p class="marginTop">审评意见:</p>
+                            </div>
                         </div>
                     </el-col>
                     <el-col :span="10">
                         <div class="applyTableShow" >
                             <p class="marginTop">联系电话:</p>
-                            <p class="marginTop">审核时间:</p>
-                            <p class="marginTop">审核人:</p>
+                            <div>
+                                <p class="marginTop">审核时间:</p>
+                                <p class="marginTop">审核人:</p>
+                            </div>
+
                         </div>
                     </el-col>
                 </el-row>
-
             </el-dialog>
         </template>
     </Main>
@@ -138,42 +153,24 @@
 
 <script>
     import Main from '../Main'
+    import axios from 'axios'
     export default {
         name: "Checked",
         components: {
             Main
         },
+        mounted(){
+            this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
+            axios.get('/teacher' + '/' + this.user_id + '/' + 2)
+                .then(res =>{
+                    this.tableData = res.data.data;
+                });
+        },
         data() {
             return {
-                    dialogVisible: false,
-                    tableData: [{
-                        className: '云计算1',
-                        bookName: '云计算原理与实践1',
-                        publicDate: '2019-12-8',
-                        applyDate: '2019-12-8',
-                        disposeDate:'2019-12-8'
-                    },
-                    {
-                        className: '云计算2',
-                        bookName: '云计算原理与实践2',
-                        publicDate: '2019-12-8',
-                        applyDate: '2019-12-8',
-                        disposeDate:'2019-12-8'
-                    },
-                    {
-                        className: '云计算3',
-                        bookName: '云计算原理与实践3',
-                        publicDate: '2019-12-8',
-                        applyDate: '2019-12-8',
-                        disposeDate:'2019-12-8'
-                    },
-                    {
-                        className: '云计算4',
-                        bookName: '云计算原理与实践4',
-                        publicDate: '2019-12-8',
-                        applyDate: '2019-12-8',
-                        disposeDate:'2019-12-8'
-                    }],
+                user_id: '',
+                dialogVisible: false,
+                tableData: [],
                 tableData2: [],
             }
         },

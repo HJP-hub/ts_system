@@ -8,28 +8,31 @@
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
                     <el-table-column label="课程名称" width="210" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{scope.row.className}}</span>
+                            <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="教材名称" width="210" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{scope.row.bookName}}</span>
+                            <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="出版单位" width="210" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{ scope.row.publicUnit }}</span>
+                            <span style="margin-left: 10px">{{ scope.row.publisher }}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作时间" width="210" align="center">
+                    <el-table-column label="操作时间" width="230" align="center">
                         <template slot-scope="scope">
-                            <i class="el-icon-time"></i>
-                            <span style="margin-left: 10px">{{ scope.row.operateDate }}</span>
-                        </template>
+                            <el-date-picker
+                                    v-model="scope.row.date"
+                                    type="date"
+                                    readonly>
+                            </el-date-picker>
+                        </template>s
                     </el-table-column>
                     <el-table-column label="状态" width="210" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{scope.row.State}}</span>
+                            <span style="margin-left: 10px">{{scope.row.status}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center">
@@ -53,42 +56,25 @@
 
 <script>
     import Main from '../Main'
+    import axios from 'axios'
     export default {
         name: "History",
         components: {
             Main
         },
+        mounted(){
+            this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
+            axios.get('/teacher' + '/' + this.user_id + '/' + 2)
+                .then(res =>{
+                    this.tableData = res.data.data;
+                });
+        },
         data() {
             return {
+                user_id: '',
                 dialogVisible: false,
-                tableData: [{
-                    className: '云计算1',
-                    bookName: '云计算原理与实践1',
-                    publicUnit: '北京大学',
-                    operateDate: '2019-12-8',
-                    State:'待提交'
-                },
-                    {
-                        className: '云计算1',
-                        bookName: '云计算原理与实践1',
-                        publicUnit: '北京大学',
-                        operateDate: '2019-12-8',
-                        State:'待审核'
-                    },
-                    {
-                        className: '云计算1',
-                        bookName: '云计算原理与实践1',
-                        publicUnit: '北京大学',
-                        operateDate: '2019-12-8',
-                        State:'已审核'
-                    },
-                    {
-                        className: '云计算1',
-                        bookName: '云计算原理与实践1',
-                        publicUnit: '北京大学',
-                        operateDate: '2019-12-8',
-                        State:'待提交'
-                    }]
+                tableData: [],
+                tableData2: [],
             }
         },
         methods: {
