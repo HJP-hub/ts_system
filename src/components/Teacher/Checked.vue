@@ -8,30 +8,39 @@
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
                     <el-table-column label="课程名称" width="220" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{scope.row.className}}</span>
+                            <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="教材名称" width="220" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{scope.row.bookName}}</span>
+                            <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="出版时间" width="220" align="center">
+                    <el-table-column label="出版时间" width="180" align="center">
                         <template slot-scope="scope">
-                                <i class="el-icon-time"></i>
-                                <span style="margin-left: 10px">{{ scope.row.publicDate }}</span>
+                            <el-date-picker
+                                    v-model="scope.row.titleDate"
+                                    type="month"
+                                    readonly>
+                            </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="申请时间" width="220" align="center">
+                    <el-table-column label="申请时间" width="180" align="center">
                         <template slot-scope="scope">
-                                <i class="el-icon-time"></i>
-                                <span style="margin-left: 10px">{{ scope.row.applyDate }}</span>
+                            <el-date-picker
+                                    v-model="scope.row.date"
+                                    type="date"
+                                    readonly>
+                            </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="处理时间" width="220" align="center">
+                    <el-table-column label="处理时间" width="180" align="center">
                         <template slot-scope="scope">
-                                <i class="el-icon-time"></i>
-                                <span style="margin-left: 10px">{{ scope.row.disposeDate }}</span>
+                            <el-date-picker
+                                    v-model="scope.row.reviewDate"
+                                    type="date"
+                                    readonly>
+                            </el-date-picker>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center">
@@ -58,7 +67,7 @@
 
                 <el-row>
                     <el-col :span="10" offset="4"><div class="applyTableShow">
-                    <p class="marginTop">课程名称: {{tableData[0].className}}</p>
+                    <p class="marginTop">课程名称:</p>
                     <p class="marginTop">教材名称:</p>
                     <p class="marginTop">编（著）者:</p>
                     <p class="marginTop">版次:</p>
@@ -78,7 +87,6 @@
                     <p class="marginTop">审核人:</p>
                     </div></el-col>
                 </el-row>
-
             </el-dialog>
         </template>
     </Main>
@@ -86,43 +94,26 @@
 
 <script>
     import Main from '../Main'
+    import axios from 'axios'
     export default {
         name: "Checked",
         components: {
             Main
         },
+        mounted(){
+            this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
+            axios.get('/teacher' + '/' + this.user_id + '/' + 3)
+                .then(res =>{
+                    console.log(res);
+                    this.tableData = res.data.data;
+                });
+            this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
+        },
         data() {
             return {
                 a:'hello',
                 dialogVisible: false,
-                    tableData: [{
-                        className: '云计算1',
-                        bookName: '云计算原理与实践1',
-                        publicDate: '2019-12-8',
-                        applyDate: '2019-12-8',
-                        disposeDate:'2019-12-8'
-                    },
-                    {
-                        className: '云计算2',
-                        bookName: '云计算原理与实践2',
-                        publicDate: '2019-12-8',
-                        applyDate: '2019-12-8',
-                        disposeDate:'2019-12-8'
-                    },
-                    {
-                        className: '云计算3',
-                        bookName: '云计算原理与实践3',
-                        publicDate: '2019-12-8',
-                        applyDate: '2019-12-8',
-                        disposeDate:'2019-12-8'
-                    },
-                    {
-                        className: '云计算4',
-                        bookName: '云计算原理与实践4',
-                        publicDate: '2019-12-8',
-                        applyDate: '2019-12-8',
-                        disposeDate:'2019-12-8'
-                    }]
+                tableData: []
             }
         },
         methods: {
@@ -181,5 +172,7 @@
     .marginTop {
         margin-top: 30px;
     }
-
+    .el-date-editor.el-input{
+        width: 100%;
+    }
 </style>

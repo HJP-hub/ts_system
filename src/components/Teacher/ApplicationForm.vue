@@ -171,7 +171,6 @@
                         this.formInline.textbook.flag = this.formInline.textbook.flag === 'true';
                         this.formInline.textbook.id = this.id;
                         this.tableData = res.data.data.class;
-                        this.tableData[this.tableData.length-1].flag = true;
                         if (this.tableData.length === 0){
                             this.tableData = [{
                                 grade:'',
@@ -182,6 +181,7 @@
                                 flag: true
                             }];
                         }
+                        this.tableData[this.tableData.length-1].flag = true;
                     })
             }
         },
