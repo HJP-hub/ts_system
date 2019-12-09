@@ -63,20 +63,72 @@
                     <p class="marginTop">编（著）者:</p>
                     <p class="marginTop">版次:</p>
                     <p class="marginTop">教材类型:</p>
-                    <p class="marginTop">教师:</p>
-                    <p class="marginTop">申请时间:</p>
-                    <p class="marginTop">审评意见:</p>
-                    </div></el-col>
+                    </div>
+                    </el-col>
                     <el-col :span="10"><div class="applyTableShow" >
                     <p class="marginTop">课程学时数: </p>
                     <p class="marginTop">出版单位:</p>
                     <p class="marginTop">出版时间:</p>
                     <p class="marginTop">书号ISBN:</p>
                     <p class="marginTop">是否为近三年优质教材:</p>
-                    <p class="marginTop">联系电话:</p>
-                    <p class="marginTop">审核时间:</p>
-                    <p class="marginTop">审核人:</p>
                     </div></el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="20" offset="3">
+                        <div class="applyTableShow">
+                            <div class="Class">
+                                <el-col :span="20" offset="1">
+                                    <h3 class="tableTitle">开课班级</h3>
+                                </el-col>
+                                <div id="Class_table">
+                                    <el-table
+                                            :data="tableData2"
+                                            :header-cell-style="tableHeaderColor">
+                                        <el-table-column
+                                                label="年级"
+                                                width="80">
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="专业、班级"
+                                                width="110">
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="人数"
+                                                width="80">
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="开课时间"
+                                                width="90">
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="必(选)修"
+                                                width="90">
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="开课学期"
+                                                width="90">
+                                        </el-table-column>
+                                    </el-table>
+                                </div>
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="10" offset="4">
+                        <div class="applyTableShow">
+                            <p class="marginTop">教师:</p>
+                            <p class="marginTop">申请时间:</p>
+                            <p class="marginTop">审评意见:</p>
+                        </div>
+                    </el-col>
+                    <el-col :span="10">
+                        <div class="applyTableShow" >
+                            <p class="marginTop">联系电话:</p>
+                            <p class="marginTop">审核时间:</p>
+                            <p class="marginTop">审核人:</p>
+                        </div>
+                    </el-col>
                 </el-row>
 
             </el-dialog>
@@ -93,7 +145,7 @@
         },
         data() {
             return {
-                dialogVisible: false,
+                    dialogVisible: false,
                     tableData: [{
                         className: '云计算1',
                         bookName: '云计算原理与实践1',
@@ -121,10 +173,17 @@
                         publicDate: '2019-12-8',
                         applyDate: '2019-12-8',
                         disposeDate:'2019-12-8'
-                    }]
+                    }],
+                tableData2: [],
             }
         },
         methods: {
+            tableHeaderColor({rowIndex}) {
+                if (rowIndex === 0) {
+                    return 'background-color: cadetblue;color: #fff;font-weight: 600; text-align: center;'
+                }
+
+            },
             handleClose(done) {
                 this.$confirm('确认关闭？')
                     .then(_ => {
@@ -173,6 +232,13 @@
         font-weight: 700;
         color: #565656;
     }
+    .tableTitle {
+        font-size: 25px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 60px;
+        margin-bottom: 30px;
+    }
     .applyTableShow {
         color: #838383;
         font-size: 15px;
@@ -180,5 +246,11 @@
     .marginTop {
         margin-top: 30px;
     }
+    #Class_table{
+        width: 100%;
+        margin: 10px auto;
+
+    }
+
 
 </style>
