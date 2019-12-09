@@ -49,17 +49,21 @@
                     </el-table-column>
                 </el-table>
             </div>
+            <FormDialog2 :PData="CData"></FormDialog2>
         </template>
     </Main>
 </template>
 
 <script>
     import Main from '../Main'
+    import FormDialog2 from './FormDialog2'
     import axios from 'axios'
+
     export default {
         name: "UnChecked",
         components: {
-            Main
+            Main,
+            FormDialog2
         },
         mounted(){
             this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
@@ -70,8 +74,14 @@
         },
         data() {
             return {
-                user_id: '',
+
                 dialogVisible: false,
+                user_id: '',
+                CData:{
+                    Visible: false,
+                    textbook: '',
+                    tableData: []
+                },
                 tableData: [],
             }
         },
@@ -90,8 +100,13 @@
                     .catch(_ => {});
             },
             handleLook(index, row) {
-                /*console.log(index, row);*/
-                this.dialogVisible = true;
+                axios.get('/teacher/findtextbook/' + this.tableData[index].id)
+                    .then(res => {
+                        console.log('FormDialog',res);
+                        this.CData.textbook = res.data.data.textbook;
+                        this.CData.tableData = res.data.data.class;
+                        this.CData.Visible=true;
+                    });
             },
             handleDelete(index){
                 this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {

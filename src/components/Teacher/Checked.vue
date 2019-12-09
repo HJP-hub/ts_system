@@ -86,7 +86,6 @@
                 user_id: '',
                 CData:{
                     Visible: false,
-                    TId: '',
                     textbook: '',
                     tableData: []
                 },
@@ -96,8 +95,7 @@
         },
         methods: {
             handleLook(index, row) {
-                this.CData.TId =  this.tableData[index].id;
-                axios.get('/teacher/findtextbook/' + this.CData.TId)
+                axios.get('/teacher/findtextbook/' + this.tableData[index].id)
                     .then(res => {
                         console.log('FormDialog',res);
                         this.CData.textbook = res.data.data.textbook;
