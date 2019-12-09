@@ -5,13 +5,13 @@
                 <h1 class="title">已审核申请表</h1>
                 <el-table
                         :data="tableData"
-                        style="width: 85%; margin-top: 30px; margin-left: 8%">
-                    <el-table-column label="课程名称" width="210" align="center">
+                        style="width: 80%; margin-top: 30px; margin-left: 11%">
+                    <el-table-column label="课程名称" width="230" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称" width="210" align="center">
+                    <el-table-column label="教材名称" width="250" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
@@ -25,7 +25,7 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="申请时间" width="180" align="center">
+                    <el-table-column label="申请时间" width="190" align="center">
                         <template slot-scope="scope">
                             <el-date-picker
                                     v-model="scope.row.date"
@@ -34,7 +34,7 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="处理时间" width="180" align="center">
+                    <el-table-column label="处理时间" width="190" align="center">
                         <template slot-scope="scope">
                             <el-date-picker
                                     v-model="scope.row.reviewDate"
@@ -43,7 +43,7 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center">
+                    <el-table-column label="操作" align="center" width="200">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
@@ -57,113 +57,20 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <el-dialog
-                    title="申请表信息"
-                    :visible.sync="dialogVisible"
-                    width="40%"
-                    style="min-width: 586px"
-                    center
-                    :before-close="handleClose">
-
-                <el-row>
-                    <el-col :span="10" offset="4"><div class="applyTableShow">
-                    <p class="marginTop">课程名称: </p>
-                    <p class="marginTop">教材名称:</p>
-                    <p class="marginTop">编（著）者:</p>
-                    <p class="marginTop">版次:</p>
-                    <p class="marginTop">教材类型:</p>
-                    </div>
-                    </el-col>
-                    <el-col :span="10"><div class="applyTableShow" >
-                    <p class="marginTop">课程学时数: </p>
-                    <p class="marginTop">出版单位:</p>
-                    <p class="marginTop">出版时间:</p>
-                    <p class="marginTop">书号ISBN:</p>
-                    <p class="marginTop">是否为近三年优质教材:</p>
-                    </div></el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="20" offset="3">
-                        <div class="applyTableShow">
-                            <div class="Class">
-                                <el-col :span="20" offset="1">
-                                    <h3 class="tableTitle">开课班级</h3>
-                                </el-col>
-                                <div id="Class_table">
-                                    <el-table
-                                            :data="tableData2"
-                                            :header-cell-style="tableHeaderColor">
-                                        <el-table-column
-                                                label="年级"
-                                                width="80">
-                                        </el-table-column>
-                                        <el-table-column
-                                                label="专业、班级"
-                                                width="110">
-                                        </el-table-column>
-                                        <el-table-column
-                                                label="人数"
-                                                width="80">
-                                        </el-table-column>
-                                        <el-table-column
-                                                label="开课时间"
-                                                width="90">
-                                        </el-table-column>
-                                        <el-table-column
-                                                label="必(选)修"
-                                                width="90">
-                                        </el-table-column>
-                                        <el-table-column
-                                                label="开课学期"
-                                                width="90">
-                                        </el-table-column>
-                                    </el-table>
-                                </div>
-                            </div>
-                        </div>
-                    </el-col>
-                </el-row>
-                <el-row>
-                    <el-col :span="10" offset="4">
-                        <div class="applyTableShow">
-                            <p class="marginTop">教师:</p>
-                            <div>
-                                <p class="marginTop">申请时间:</p>
-                                <p class="marginTop">审评意见:</p>
-                            </div>
-                        </div>
-                    </el-col>
-                    <el-col :span="10">
-                        <div class="applyTableShow" >
-                            <p class="marginTop">联系电话:</p>
-                            <div>
-                                <p class="marginTop">审核时间:</p>
-                                <p class="marginTop">审核人:</p>
-                            </div>
-
-                        </div>
-                    </el-col>
-                </el-row>
-
-            </el-dialog>
+            <FormDialog :PData="CData"></FormDialog>
         </template>
     </Main>
 </template>
 
 <script>
     import Main from '../Main'
+    import FormDialog from './FormDialog'
     import axios from 'axios'
     export default {
         name: "Checked",
         components: {
-            Main
-        },
-        mounted(){
-            this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
-            axios.get('/teacher' + '/' + this.user_id + '/' + 2)
-                .then(res =>{
-                    this.tableData = res.data.data;
-                });
+            Main,
+            FormDialog
         },
         mounted(){
             this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
@@ -177,28 +84,26 @@
         data() {
             return {
                 user_id: '',
-                dialogVisible: false,
+                CData:{
+                    Visible: false,
+                    TId: '',
+                    textbook: '',
+                    tableData: []
+                },
                 tableData: [],
-                tableData2: [],
+
             }
         },
         methods: {
-            tableHeaderColor({rowIndex}) {
-                if (rowIndex === 0) {
-                    return 'background-color: cadetblue;color: #fff;font-weight: 600; text-align: center;'
-                }
-
-            },
-            handleClose(done) {
-                this.$confirm('确认关闭？')
-                    .then(_ => {
-                        done();
-                    })
-                    .catch(_ => {});
-            },
             handleLook(index, row) {
-                /*console.log(index, row);*/
-                this.dialogVisible = true;
+                this.CData.TId =  this.tableData[index].id;
+                axios.get('/teacher/findtextbook/' + this.CData.TId)
+                    .then(res => {
+                        console.log('FormDialog',res);
+                        this.CData.textbook = res.data.data.textbook;
+                        this.CData.tableData = res.data.data.class;
+                        this.CData.Visible=true;
+                    });
             },
             handleDelete(index){
                 this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
@@ -206,24 +111,31 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    if (this.tableData.length !== 1){
-                        this.tableData.splice(index, 1)
-                    }
-                    if (this.tableData[this.tableData.length - 1].flag !== true){
-                        this.tableData[this.tableData.length - 1].flag = true
-                    }
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                    axios.delete('/teacher/' + this.tableData[index].id)
+                        .then(res => {
+                            if (this.tableData.length !== 1){
+                                this.tableData.splice(index, 1);
+                            }
+                            if (this.tableData[this.tableData.length - 1].flag !== true){
+                                this.tableData[this.tableData.length - 1].flag = true
+                            }
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        }).catch(error =>{
+                        this.$message({
+                            type: 'success',
+                            message: '删除失败!'
+                        });
+                    })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
                         message: '已取消删除'
                     });
                 });
-
-            },
+            }
         }
     }
 </script>
@@ -237,26 +149,7 @@
         font-weight: 700;
         color: #565656;
     }
-    .tableTitle {
-        font-size: 25px;
-        font-weight: bold;
-        text-align: center;
-        margin-top: 60px;
-        margin-bottom: 30px;
-    }
-    .applyTableShow {
-        color: #838383;
-        font-size: 15px;
-    }
-    .marginTop {
-        margin-top: 30px;
-    }
-    #Class_table{
-        width: 100%;
-        margin: 10px auto;
-
-    }
     .el-date-editor.el-input{
-        width: 100%;
+        width: 80%;
     }
 </style>

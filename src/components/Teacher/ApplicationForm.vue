@@ -41,7 +41,8 @@
                                     <el-date-picker
                                             v-model="formInline.textbook.titleDate"
                                             type="month"
-                                            placeholder="201X年X月">
+                                            placeholder="201X年X月"
+                                            value-format="yyyy 年 MM 月">
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="书号ISBN" :label-width="formLabelWidth">
