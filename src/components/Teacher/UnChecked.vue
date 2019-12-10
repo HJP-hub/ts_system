@@ -18,11 +18,7 @@
                     </el-table-column>
                     <el-table-column label="出版时间" width="220" align="center">
                         <template slot-scope="scope">
-                            <el-date-picker
-                                    v-model="scope.row.titleDate"
-                                    type="date"
-                                    readonly>
-                            </el-date-picker>
+                            <span style="margin-left: 10px">{{scope.row.titleDate}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="申请时间" width="220" align="center">
@@ -69,6 +65,7 @@
             this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
             axios.get('/teacher' + '/' + this.user_id + '/' + 2)
                 .then(res =>{
+                    console.log(res);
                     this.tableData = res.data.data;
                 });
         },
