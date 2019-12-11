@@ -2,7 +2,7 @@
     <el-footer id="foot" height="150px">
         <el-row type="flex" class="row-bg" justify="space-between">
             <el-col :span="2">
-                <img class="foot_logo" src="../assets/img/foot_logo_left.png"/>
+                <img class="foot_logo" style="margin-left: 14%" src="../assets/img/foot_logo_left.png"/>
             </el-col>
             <el-col :span="20" class="foot_middle">
                 <h1>电子科技大学中山学院教材选定系统</h1>
@@ -27,7 +27,8 @@
         width: 100%;
     }
     .foot_logo {
-        height: 140px;
+        height: 130px;
+        margin-top: 10px;
     }
     .foot_middle {
         text-align: center;

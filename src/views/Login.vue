@@ -3,8 +3,8 @@
         <div class="v-center">
             <div id="box">
                 <h1 class="login_title">教材选定系统</h1>
-                <div class="line_input"><el-input class="input-text margin_50top" placeholder="请输入用户名" prefix-icon="el-icon-s-custom" size="medium" v-model="user.userName"></el-input></div>
-                <div class="line_input"><el-input class="input-text margin_50top" placeholder="请输入密码" prefix-icon="el-icon-lock" size="medium"  v-model="user.userPassword" show-password></el-input></div>
+                <div class="line_input"><el-input class="input-text margin_50top" placeholder="请输入用户名" prefix-icon="el-icon-s-custom" size="medium" v-model="user.userName" @keyup.enter.native="login"></el-input></div>
+                <div class="line_input"><el-input class="input-text margin_50top" placeholder="请输入密码" prefix-icon="el-icon-lock" size="medium"  v-model="user.userPassword" show-password @keyup.enter.native="login"></el-input></div>
                 <el-button type="primary" round @click="login" class="login_btn margin_50top">登录</el-button>
             </div>
         </div>

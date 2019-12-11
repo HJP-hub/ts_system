@@ -4,12 +4,10 @@ import VueRouter from 'vue-router'
 import Login from '../views/Login'
 import Teacher from '../views/Teacher'
 import Secretary from '../views/Secretary'
-import ShowInformation from "../components/Teacher/ShowInformation"
 import ApplicationForm from '../components/Teacher/ApplicationForm'
 import Checked from "../components/Teacher/Checked";
 import History from "../components/Teacher/History";
 import Home from "../components/Teacher/Home";
-import ModifyInformation from "../components/Teacher/ModifyInformation";
 import UnChecked from "../components/Teacher/UnChecked";
 import WaitingSubmit from "../components/Teacher/WaitingSubmit";
 
@@ -63,16 +61,6 @@ const routes = [
                 path: 'history',
                 name: 'history',
                 component: History
-            },
-            {
-                path: 'showinformation',
-                name: 'showinformation',
-                component: ShowInformation
-            },
-            {
-                path: 'modifyinformation',
-                name: 'modifyinformation',
-                component: ModifyInformation
             }
         ]
     },
@@ -87,7 +75,5 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 });
-
-router
 
 export default router

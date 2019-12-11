@@ -11,18 +11,14 @@
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称" width="250" align="center">
+                    <el-table-column label="教材名称" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="出版时间" width="180" align="center">
                         <template slot-scope="scope">
-                            <el-date-picker
-                                    v-model="scope.row.titleDate"
-                                    type="month"
-                                    readonly>
-                            </el-date-picker>
+                            <span style="margin-left: 10px">{{scope.row.titleDate}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="申请时间" width="190" align="center">
@@ -48,7 +44,7 @@
                             <el-button
                                     size="mini"
                                     type="primary"
-                                    @click="handleLook(scope.$index, scope.row)">查看</el-button>
+                                    @click="handleLook(scope.$index, scope.row)">详情</el-button>
                             <el-button
                                     size="mini"
                                     type="danger"

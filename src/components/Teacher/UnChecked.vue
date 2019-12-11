@@ -11,7 +11,7 @@
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称" width="300" align="center">
+                    <el-table-column label="教材名称"align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
@@ -31,7 +31,7 @@
                         </template>
                     </el-table-column>
 
-                    <el-table-column label="操作" align="center">
+                    <el-table-column label="操作" align="center" width="200">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
@@ -45,21 +45,21 @@
                     </el-table-column>
                 </el-table>
             </div>
-            <FormDialog2 :PData="CData"></FormDialog2>
+            <FormDialog :PData="CData"></FormDialog>
         </template>
     </Main>
 </template>
 
 <script>
     import Main from '../Main'
-    import FormDialog2 from './FormDialog2'
+    import FormDialog from './FormDialog'
     import axios from 'axios'
 
     export default {
         name: "UnChecked",
         components: {
             Main,
-            FormDialog2
+            FormDialog
         },
         mounted(){
             this.user_id = JSON.parse(sessionStorage.getItem("user")).id;

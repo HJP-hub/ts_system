@@ -66,14 +66,13 @@
                                     :header-cell-style="tableHeaderColor">
                                 <el-table-column
                                         label="年级"
-                                        width="100%">
+                                        width="80">
                                     <template slot-scope="scope">
                                         <el-input v-model="scope.row.grade"></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
-                                        label="专业、班级"
-                                        width="140">
+                                        label="专业、班级">
                                     <template slot-scope="scope">
                                         <el-input v-model="scope.row.subject"></el-input>
                                     </template>
@@ -107,12 +106,28 @@
                                                 v-model="scope.row.date"
                                                 type="date"
                                                 placeholder="选择日期"
-                                                size="large">
+                                                size="large"
+                                                value-format="yyyy-MM-dd">
                                         </el-date-picker>
                                     </template>
                                 </el-table-column>
-
-                                <el-table-column label="操作">
+                                <el-table-column
+                                        label="开课学期"
+                                        width="130">
+                                    <template slot-scope="scope">
+                                        <el-select v-model="scope.row.semester" placeholder="请选择">
+                                            <el-option
+                                                    v-for="item in semester_option"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        label="操作"
+                                        width="160">
                                     <template slot-scope="scope">
                                             <el-button
                                                     size="mini"
@@ -230,19 +245,19 @@
                     flag: true
                 }],
                 title_option:[{
-                    value: 'a',
+                    value: '教育部国家级规划教材',
                     label: '教育部国家级规划教材'
                 }, {
-                    value: 'b',
+                    value: '省部级规划教材',
                     label: '省部级规划教材'
                 }, {
-                    value: 'c',
+                    value: '教育部国家级精品教材',
                     label: '教育部国家级精品教材'
                 }, {
-                    value: 'd',
+                    value: '省部级精品教材',
                     label: '省部级精品教材'
                 }, {
-                    value: 'e',
+                    value: '无',
                     label: '无'
                 }],
                 classType_option:[{
@@ -251,6 +266,13 @@
                 }, {
                     value: '选修',
                     label: '选修'
+                }],
+                semester_option:[{
+                    value: '第一学期',
+                    label: '第一学期'
+                }, {
+                    value: '第二学期',
+                    label: '第二学期'
                 }],
                 tips:['近三年出版的优质教材：指近三年出版的省部级以上（含省部级）规划教材、重点推荐教材、精品教材等优质教材。',
                     '出版日期需严格按照范例格式填写，经过多版修订的教材填s写最近一次出版的日期。',
@@ -315,12 +337,18 @@
                                 type: 'success',
                                 message: '提交成功'
                             });
+                            setTimeout(() =>{
+                                this.$router.push('/teacher/unchecked')
+                            },1200)
                         }
                         else {
                             this.$message({
                                 type: 'success',
                                 message: '保存成功'
                             });
+                            setTimeout(() =>{
+                                this.$router.push('/teacher/waitingsubmit')
+                            },1200)
                         }
                         if (this.id === undefined){
                             this.send_create_request();
@@ -405,7 +433,7 @@
         font-size: 40px;
     }
     #Class_table{
-        width: 70%;
+        width: 80%;
         margin: 10px auto;
     }
     #Class_table  .el-date-editor.el-input{

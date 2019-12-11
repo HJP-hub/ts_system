@@ -23,7 +23,7 @@
             </div></el-col>
         </el-row>
         <el-row>
-            <el-col :span=20 :offset=2>
+            <el-col :span=18 :offset=3>
                 <div class="applyTableShow">
                     <div class="Class">
                         <el-col :span=20 :offset=1>
@@ -38,7 +38,7 @@
                                         width="120"
                                         align="center">
                                     <template slot-scope="scope">
-                                        <span style="margin-left: 10px">{{scope.row.grade}}</span>
+                                        <span>{{scope.row.grade}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -46,7 +46,7 @@
                                         width="220"
                                         align="center">
                                     <template slot-scope="scope">
-                                        <span style="margin-left: 10px">{{scope.row.subject}}</span>
+                                        <span>{{scope.row.subject}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -54,7 +54,7 @@
                                         width="100"
                                         align="center">
                                     <template slot-scope="scope">
-                                        <span style="margin-left: 10px">{{scope.row.number}}</span>
+                                        <span>{{scope.row.number}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
@@ -62,20 +62,21 @@
                                         width="200"
                                         align="center">
                                     <template slot-scope="scope">
-                                        <span style="margin-left: 10px">{{scope.row.classType}}</span>
+                                        <span>{{scope.row.classType}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column
                                         label="开课时间"
                                         align="center">
                                     <template slot-scope="scope">
-                                        <el-date-picker
-                                                v-model="scope.row.date"
-                                                type="date"
-                                                placeholder="选择日期"
-                                                size="large"
-                                                readonly="true">
-                                        </el-date-picker>
+                                        <span>{{scope.row.date}}</span>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column
+                                        label="开课学期"
+                                        align="center">
+                                    <template slot-scope="scope">
+                                        <span>{{scope.row.semester}}</span>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -88,7 +89,7 @@
             <el-col :span=10 :offset=4>
                 <div class="applyTableShow">
                     <p class="marginTop">教师:</p>
-                    <div>
+                    <div v-if="textbook.status===3">
                         <p class="marginTop">申请时间:</p>
                         <p class="marginTop">审评意见:</p>
                     </div>
@@ -97,7 +98,7 @@
             <el-col :span=10>
                 <div class="applyTableShow" >
                     <p class="marginTop">联系电话:</p>
-                    <div>
+                    <div v-if="textbook.status===3">
                         <p class="marginTop">审核时间:</p>
                         <p class="marginTop">审核人:</p>
                     </div>
