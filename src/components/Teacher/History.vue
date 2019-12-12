@@ -169,7 +169,7 @@
                     .then(res =>{
                         console.log('getall:',res);
                         this.tableData = res.data.data.list;
-                        // this.$set(this.tableData,res.data.data.list);
+                        this.page.total = res.data.data.total;
                     });
             }
         }
