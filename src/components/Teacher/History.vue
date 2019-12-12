@@ -60,7 +60,7 @@
                             background
                             layout="prev, pager, next"
                             :total="page.total"
-                            :current-page="req.page"
+                            :current-page.sync="req.page"
                             @prev-click="prev"
                             @next-click="next"
                             @current-change="current">
