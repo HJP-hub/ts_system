@@ -48,6 +48,18 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <div class="page">
+                    <el-pagination
+                            background
+                            layout="prev, pager, next"
+                            :total="page.total"
+                            :current-page.sync="req.page"
+                            @prev-click="prev"
+                            @next-click="next"
+                            @current-change="current">
+                    </el-pagination>
+                </div>
+
             </div>
         </template>
     </Main>
@@ -63,17 +75,26 @@
         },
         mounted(){
             this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
-            axios.get('/teacher' + '/' + this.user_id + '/' + 1)
+            axios.get('/teacher' + '/' + this.user_id + '/' + 1 + '?page=' + this.req.page + '&size=' +  this.req.size)
                 .then(res =>{
-                    this.tableData = res.data.data;
-            });
+                    console.log(res);
+                    this.tableData = res.data.data.list;
+                    this.page.total = res.data.data.total;
+                });
             this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         data(){
             return {
                 user_id: '',
                 tableData: [],
-                realName: ''
+                realName: '',
+                req: {
+                    page: 1,
+                    size: 10
+                },
+                page:{
+                    total: 0
+                }
             }
         },
         methods: {
@@ -111,6 +132,25 @@
                     });
                 });
             },
+            prev(){
+                this.req.page -= 1;
+            },
+            next(){
+                this.req.page += 1;
+            },
+            current(){
+                console.log('current:',this.req.page);
+                this.page_request();
+            },
+            page_request(){
+                axios.get('/teacher/getall/' + this.user_id + '?page=' + this.req.page + '&size=' +  this.req.size)
+                    .then(res =>{
+                        console.log('getall:',res);
+                        this.tableData = res.data.data.list;
+                        // this.$set(this.tableData,res.data.data.list);
+                    });
+            }
+
         }
     }
 </script>
@@ -137,5 +177,9 @@
         height: 40px;
         line-height: 40px;
         font-family: '华文彩云';
+    }
+    .page{
+        margin-top: 20px;
+        text-align: center;
     }
 </style>

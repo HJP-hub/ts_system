@@ -21,7 +21,7 @@ npm run build
 
 ```
 userType 1 为 教师，2 为秘书
-sex 1 为 男，0 为女
+status 1待提交 2待审核 3已审核
 ```
 
 
