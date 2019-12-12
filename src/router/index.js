@@ -10,7 +10,11 @@ import History from "../components/Teacher/History";
 import Home from "../components/Teacher/Home";
 import UnChecked from "../components/Teacher/UnChecked";
 import WaitingSubmit from "../components/Teacher/WaitingSubmit";
-
+import ApplicationFormCheck from "../components/Secretary/ApplicationFormCheck";
+import ApplicationFormExport from "../components/Secretary/ApplicationFormExport";
+import SHistory from "../components/Secretary/SHistory";
+import UserManagement from "../components/Secretary/UserManagement";
+import SHome from "../components/Secretary/Home"
 
 Vue.use(VueRouter);
 
@@ -66,7 +70,38 @@ const routes = [
     },
     {
       path: '/secretary',
-      component: Secretary
+      component: Secretary,
+      children:[
+            {
+                path: '',
+                redirect: 's_home'
+            },
+            {
+                path: 's_home',
+                name: 's_home',
+                component: SHome
+            },
+            {
+                path: 'applicationformcheck',
+                name: 'applicationformcheck',
+                component: ApplicationFormCheck
+            },
+            {
+                path: 'applicationformexport',
+                name: 'applicationformexport',
+                component: ApplicationFormExport
+            },
+            {
+                path: 's_history',
+                name: 's_history',
+                component: SHistory
+            },
+            {
+                path: 'usermanagement',
+                name: 'usermanagement',
+                component: UserManagement
+            }
+        ]
     }
 ];
 
