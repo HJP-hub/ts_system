@@ -88,19 +88,19 @@
         <el-row>
             <el-col :span=10 :offset=4>
                 <div class="applyTableShow">
-                    <p class="marginTop">教师:</p>
+                    <p class="marginTop"><span class="key-name">教师:</span><span>{{user.realName}}</span></p>
                     <div v-if="textbook.status===3">
-                        <p class="marginTop">申请时间:</p>
-                        <p class="marginTop">审评意见:</p>
+                        <p class="marginTop"><span class="key-name">申请时间:</span><span></span></p>
+                        <p class="marginTop"><span class="key-name">审评意见:</span><span></span></p>
                     </div>
                 </div>
             </el-col>
             <el-col :span=10>
                 <div class="applyTableShow" >
-                    <p class="marginTop">联系电话:</p>
+                    <p class="marginTop"><span class="key-name">联系电话:</span><span>{{textbook.phone}}</span></p>
                     <div v-if="textbook.status===3">
-                        <p class="marginTop">审核时间:</p>
-                        <p class="marginTop">审核人:</p>
+                        <p class="marginTop"><span class="key-name">审核时间:</span><span></span></p>
+                        <p class="marginTop"><span class="key-name">审核人:</span><span></span></p>
                     </div>
                 </div>
             </el-col>
@@ -115,8 +115,14 @@
         data(){
             return {
                 textbook: '',
-                tableData:  []
+                tableData:  [],
+                user: {
+                    realName: ''
+                }
             }
+        },
+        mounted() {
+            this.user.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         watch: {
             PData:{

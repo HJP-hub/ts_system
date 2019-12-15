@@ -88,7 +88,6 @@
                     this.tableData = res.data.data.list;
                     this.page.total = res.data.data.total;
                 });
-
             this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         data() {
@@ -163,11 +162,11 @@
                 this.page_request();
             },
             page_request(){
-                axios.get('/teacher' + '/' + this.user_id + '/' + 3 + '?page=' + this.req.page + '&size=' +  this.req.size)
+                axios.get('/teacher/getall/' + this.user_id + '?page=' + this.req.page + '&size=' +  this.req.size)
                     .then(res =>{
                         console.log('getall:',res);
                         this.tableData = res.data.data.list;
-                        this.page.total = res.data.data.total;
+                        // this.$set(this.tableData,res.data.data.list);
                     });
             }
         }

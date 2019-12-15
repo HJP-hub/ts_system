@@ -14,7 +14,7 @@
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
                     <el-table-column label="申请人" width="210" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{scope.row.author}}</span>
+                            <span style="margin-left: 10px">{{realName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="教材名称" width="230" align="center">
