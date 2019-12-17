@@ -6,56 +6,62 @@
                 <div id="form">
                     <div id="text">
                         <el-form :inline="true" :model="formInline" size="medium" label-position="left" :rules="rules"  ref="formInline">
-                            <div class="form_col form_fir_col">
-                                <el-form-item label="课程名称" :label-width="formLabelWidth" prop="courseNAME">
-                                    <el-input v-model="formInline.textbook.courseName" class="input_width"></el-input>
-                                </el-form-item>
-                                <el-form-item label="教材名称" :label-width="formLabelWidth" prop="titleName">
-                                    <el-input v-model="formInline.textbook.titleName" class="input_width"></el-input>
-                                </el-form-item>
-                                <el-form-item label="编(著)者" :label-width="formLabelWidth">
-                                    <el-input v-model="formInline.textbook.author" class="input_width"></el-input>
-                                </el-form-item>
-                                <el-form-item label="版次" :label-width="formLabelWidth">
-                                    <el-input-number v-model="formInline.textbook.version" :min="1" :max="20"></el-input-number>
-                                </el-form-item>
-                                <el-form-item label="教材类型" :label-width="formLabelWidth">
-                                    <el-select v-model="formInline.textbook.titleType" placeholder="请选择">
-                                        <el-option
-                                                v-for="item in title_option"
-                                                :key="item.value"
-                                                :label="item.label"
-                                                :value="item.value">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </div>
-                            <div class="form_col">
-                                <el-form-item label="课程学时数" :label-width="formLabelWidth">
-                                    <el-input v-model="formInline.textbook.courseTime" class="input_width" type="number" min="0"></el-input>
-                                </el-form-item>
-                                <el-form-item label="出版单位" :label-width="formLabelWidth" prop="publisher">
-                                    <el-input v-model="formInline.textbook.publisher" class="input_width"></el-input>
-                                </el-form-item>
-                                <el-form-item label="出版时间" :label-width="formLabelWidth">
-                                    <el-date-picker
-                                            v-model="formInline.textbook.titleDate"
-                                            type="month"
-                                            placeholder="201X年X月"
-                                            value-format="yyyy-MM">
-                                    </el-date-picker>
-                                </el-form-item>
-                                <el-form-item label="书号ISBN" :label-width="formLabelWidth">
-                                    <el-input v-model="formInline.textbook.isbn" class="input_width"></el-input>
-                                </el-form-item>
-                                <el-form-item label="是否为近三年优质教材" :label-width="formLabelWidth">
-                                    <el-switch
-                                            v-model="formInline.textbook.flag"
-                                            active-color="#339999"
-                                            inactive-color="#ff4949">
-                                    </el-switch>
-                                </el-form-item>
-                            </div>
+                            <el-row>
+                                <el-col :span="12" :push=2>
+                                    <div class="form_col form_fir_col">
+                                        <el-form-item label="课程名称" :label-width="formLabelWidth" prop="courseNAME">
+                                            <el-input v-model="formInline.textbook.courseName" class="input_width"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="教材名称" :label-width="formLabelWidth" prop="titleName">
+                                            <el-input v-model="formInline.textbook.titleName" class="input_width"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="编(著)者" :label-width="formLabelWidth">
+                                            <el-input v-model="formInline.textbook.author" class="input_width"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="版次" :label-width="formLabelWidth">
+                                            <el-input-number v-model="formInline.textbook.version" :min="1" :max="20"></el-input-number>
+                                        </el-form-item>
+                                        <el-form-item label="教材类型" :label-width="formLabelWidth">
+                                            <el-select v-model="formInline.textbook.titleType" placeholder="请选择">
+                                                <el-option
+                                                        v-for="item in title_option"
+                                                        :key="item.value"
+                                                        :label="item.label"
+                                                        :value="item.value">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                    </div>
+                                </el-col>
+                                <el-col :span="12" :push=2>
+                                    <div class="form_col">
+                                        <el-form-item label="课程学时数" :label-width="formLabelWidth">
+                                            <el-input v-model="formInline.textbook.courseTime" class="input_width" type="number" min="0"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="出版单位" :label-width="formLabelWidth" prop="publisher">
+                                            <el-input v-model="formInline.textbook.publisher" class="input_width"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="出版时间" :label-width="formLabelWidth">
+                                            <el-date-picker
+                                                    v-model="formInline.textbook.titleDate"
+                                                    type="month"
+                                                    placeholder="201X年X月"
+                                                    value-format="yyyy-MM">
+                                            </el-date-picker>
+                                        </el-form-item>
+                                        <el-form-item label="书号ISBN" :label-width="formLabelWidth">
+                                            <el-input v-model="formInline.textbook.isbn" class="input_width"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="是否为近三年优质教材" :label-width="formLabelWidth">
+                                            <el-switch
+                                                    v-model="formInline.textbook.flag"
+                                                    active-color="#339999"
+                                                    inactive-color="#ff4949">
+                                            </el-switch>
+                                        </el-form-item>
+                                    </div>
+                                </el-col>
+                            </el-row>
                         </el-form>
                     </div>
                     <div class="Class">
@@ -179,27 +185,38 @@
     export default {
         name: "ApplicationForm",
         mounted(){
-            this.id = this.$route.params.id;
-            if(this.id !== undefined){
-                axios.get('teacher/findtextbook/' + this.id)
-                    .then(res => {
-                        console.log('update', res);
-                        this.formInline.textbook = res.data.data.textbook;
-                        this.formInline.textbook.flag = this.formInline.textbook.flag === 'true';
-                        this.formInline.textbook.id = this.id;
-                        this.tableData = res.data.data.class;
-                        if (this.tableData.length === 0){
-                            this.tableData = [{
-                                grade:'',
-                                subject: '',
-                                number: '',
-                                classType:'',
-                                date: '',
-                                flag: true
-                            }];
-                        }
-                        this.tableData[this.tableData.length-1].flag = true;
-                    })
+            if (this.$route.params.id !== '-1'){
+                this.route_params.id = this.$route.params.id;
+                this.route_params.status = this.$route.params.status;
+                if (this.$route.params.status === '1'){
+                    if(this.route_params.id !== undefined){
+                        axios.get('teacher/findtextbook/' + this.route_params.id)
+                            .then(res => {
+                                console.log('update', res);
+                                this.formInline.textbook = res.data.data.textbook;
+                                this.formInline.textbook.flag = this.formInline.textbook.flag === 'true';
+                                this.formInline.textbook.id = this.route_params.id;
+                                this.tableData = res.data.data.class;
+                                if (this.tableData.length === 0){
+                                    this.tableData = [{
+                                        grade:'',
+                                        subject: '',
+                                        number: '',
+                                        classType:'',
+                                        date: '',
+                                        flag: true
+                                    }];
+                                }
+                                this.tableData[this.tableData.length-1].flag = true;
+                            })
+                    }
+                }else{
+                    axios.get('main/book/' + this.route_params.id)
+                        .then(res => {
+                            console.log("book_info:", res);
+                            this.formInline.textbook = res.data.data;
+                        })
+                }
             }
         },
         data(){
@@ -218,7 +235,10 @@
             };
             return {
                 formLabelWidth: '100px',
-                id: '',
+                route_params:{
+                    id: '',
+                    status: ''
+                },
                 formInline:{
                     textbook: {
                         courseName: '',
@@ -351,7 +371,7 @@
                                 this.$router.push('/teacher/waitingsubmit')
                             },1200)
                         }
-                        if (this.id === undefined){
+                        if (this.$route.params.status === undefined || this.$route.params.status === '0'){
                             this.send_create_request();
                         }else{
                             this.send_update_request()
@@ -387,6 +407,7 @@
             },
             send_update_request(){
                 this.formInline.textbook.teacherId = JSON.parse(sessionStorage.getItem("user")).id;
+                this.formInline.textbook.status = "2";
                 axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
                         console.log('update_class:',res);

@@ -17,7 +17,7 @@
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称" width="260" align="center">
+                    <el-table-column label="教材名称" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
@@ -36,7 +36,7 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center">
+                    <el-table-column label="操作" align="center" width="200">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
@@ -99,7 +99,7 @@
         },
         methods: {
             handleEdit(index, row) {
-                this.$router.push('applicationform/' + this.tableData[index].id)
+                this.$router.push('applicationform/1/' + this.tableData[index].id)
             },
             handleDelete(index){
                 this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {

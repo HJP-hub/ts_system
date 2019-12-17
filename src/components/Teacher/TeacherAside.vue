@@ -11,8 +11,8 @@
                 <template slot="title"><i class="el-icon-menu"></i><span>教材申请</span></template>
                 <el-menu-item index="applicationform" :route="{name: 'applicationform'}"><i class="el-icon-edit"></i>填写申请表</el-menu-item>
                 <el-menu-item index="waitingsubmit" :route="{name: 'waitingsubmit'}"><i class="el-icon-edit-outline"></i>待提交</el-menu-item>
-                <el-menu-item index="checked" :route="{name: 'checked'}"><i class="el-icon-document-checked"></i>已审核</el-menu-item>
                 <el-menu-item index="unchecked" :route="{name: 'unchecked'}"><i class="el-icon-document-copy"></i>待审核</el-menu-item>
+                <el-menu-item index="checked" :route="{name: 'checked'}"><i class="el-icon-document-checked"></i>已审核</el-menu-item>
                 <el-menu-item index="history" :route="{name: 'history'}"><i class="el-icon-box"></i>历史记录</el-menu-item>
             </el-submenu>
             <el-menu-item @click="Visible.PVisible=true"><i class="el-icon-user"></i>个人资料</el-menu-item>

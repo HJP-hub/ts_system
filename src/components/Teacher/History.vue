@@ -6,7 +6,7 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="课程名称" width="210" align="center">
+                    <el-table-column label="课程名称" width="180" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
@@ -30,11 +30,12 @@
                             </el-date-picker>
                         </template>s
                     </el-table-column>
-                    <el-table-column label="状态" width="160" align="center">
+                    <el-table-column label="状态" width="80" align="center">
                         <template slot-scope="scope">
                             <el-tag type="info" v-if="scope.row.status===1">待提交</el-tag>
                             <el-tag v-else-if="scope.row.status===2">未审核</el-tag>
-                            <el-tag type="success" v-else-if="scope.row.status===3">已审核</el-tag>
+                            <el-tag type="success" v-else-if="scope.row.status===3">通过</el-tag>
+                            <el-tag type="danger" v-else-if="scope.row.status===4">驳回</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center" width="200">
@@ -75,7 +76,7 @@
 <script>
     import Main from '../Main'
     import axios from 'axios'
-    import FormDialog from './FormDialog'
+    import FormDialog from '../FormDialog'
     export default {
         name: "History",
         components: {
@@ -130,7 +131,7 @@
                     type: 'warning'
                 }).then(() => {
                     axios.delete('/teacher/' + this.tableData[index].id)
-                        .then(res => {
+                        .then(() => {
                             if (this.tableData.length !== 1){
                                 this.tableData.splice(index, 1);
                             }
@@ -141,7 +142,7 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                        }).catch(error =>{
+                        }).catch(() =>{
                         this.$message({
                             type: 'success',
                             message: '删除失败!'

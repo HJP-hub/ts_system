@@ -6,7 +6,7 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="课程名称" width="230" align="center">
+                    <el-table-column label="课程名称" width="150" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
@@ -16,12 +16,12 @@
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="出版时间" width="180" align="center">
+                    <el-table-column label="出版时间" width="150" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleDate}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="申请时间" width="190" align="center">
+                    <el-table-column label="申请时间" width="180" align="center">
                         <template slot-scope="scope">
                             <el-date-picker
                                     v-model="scope.row.date"
@@ -30,13 +30,19 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="处理时间" width="190" align="center">
+                    <el-table-column label="处理时间" width="180" align="center">
                         <template slot-scope="scope">
                             <el-date-picker
                                     v-model="scope.row.reviewDate"
                                     type="date"
                                     readonly>
                             </el-date-picker>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="状态" width="70" align="center">
+                        <template slot-scope="scope">
+                            <el-tag type="success" v-if="scope.row.status===3">通过</el-tag>
+                            <el-tag type="danger" v-else-if="scope.row.status===4">驳回</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column label="操作" align="center" width="200">
@@ -72,7 +78,7 @@
 
 <script>
     import Main from '../Main'
-    import FormDialog from './FormDialog'
+    import FormDialog from '../FormDialog'
     import axios from 'axios'
     export default {
         name: "Checked",
@@ -111,7 +117,7 @@
             }
         },
         methods: {
-            handleLook(index, row) {
+            handleLook(index) {
                 axios.get('/teacher/findtextbook/' + this.tableData[index].id)
                     .then(res => {
                         console.log('FormDialog',res);
@@ -127,7 +133,7 @@
                     type: 'warning'
                 }).then(() => {
                     axios.delete('/teacher/' + this.tableData[index].id)
-                        .then(res => {
+                        .then(() => {
                             if (this.tableData.length !== 1){
                                 this.tableData.splice(index, 1);
                             }
@@ -138,11 +144,12 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                        }).catch(error =>{
+                        }).catch(() =>{
                         this.$message({
                             type: 'success',
                             message: '删除失败!'
                         });
+                        this.list_req();
                     })
                 }).catch(() => {
                     this.$message({
@@ -168,6 +175,14 @@
                         this.tableData = res.data.data.list;
                         // this.$set(this.tableData,res.data.data.list);
                     });
+            },
+            list_req(){
+                axios.get('/teacher' + '/' + this.user_id + '/' + 3 + '?page=' + this.req.page + '&size=' +  this.req.size)
+                    .then(res =>{
+                        console.log(res);
+                        this.tableData = res.data.data.list;
+                        this.page.total = res.data.data.total;
+                    });
             }
         }
     }
@@ -183,7 +198,7 @@
         color: #565656;
     }
     .el-date-editor.el-input{
-        width: 80%;
+        width: 85%;
     }
     .page{
         margin-top: 20px;

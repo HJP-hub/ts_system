@@ -2,41 +2,47 @@
     <el-dialog
             title="用户信息"
             :visible.sync="CVisible.PVisible"
-            width="36%"
+            width="700px"
             center>
         <el-form :inline="true" :model="formInline" :rules="rules" ref="formInline">
-            <el-form-item label="用户名" :label-width="formLabelWidth">
-                <el-input v-model="formInline.user.realName" class="dialog_width">{{formInline.user.realName}}</el-input>
-            </el-form-item>
-            <el-form-item label="性别" :label-width="formLabelWidth">
-                <el-radio v-model="formInline.user.sex" label="男">男</el-radio>
-                <el-radio v-model="formInline.user.sex" label="女">女</el-radio>
-            </el-form-item>
-            <el-form-item label="工号" :label-width="formLabelWidth">
-                <el-input v-model="formInline.user.jobNumber" class="dialog_width"  :disabled="true">{{formInline.user.jobNumber}}</el-input>
-            </el-form-item>
-            <el-form-item label="学院" :label-width="formLabelWidth">
-                <el-select v-model="formInline.user.college" placeholder="请选择">
-                    <el-option
-                            v-for="item in college_options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
-                <el-input v-model="formInline.user.email" class="dialog_width">{{formInline.user.email}}</el-input>
-            </el-form-item>
-            <el-form-item label="新密码" :label-width="formLabelWidth" prop="pass">
-                <el-input v-model="formInline.other.pass" class="dialog_width" show-password>{{formInline.other.pass}}</el-input>
-            </el-form-item>
-            <el-form-item label="联系电话" :label-width="formLabelWidth">
-                <el-input v-model="formInline.user.phone" class="dialog_width">{{formInline.user.phone}}</el-input>
-            </el-form-item>
-            <el-form-item label="确认密码" :label-width="formLabelWidth" prop="checkPass">
-                <el-input v-model="formInline.other.checkPass" class="dialog_width" show-password>{{formInline.other.checkPass}}</el-input>
-            </el-form-item>
+            <el-row>
+                <el-col>
+                    <el-form-item label="用户名" :label-width="formLabelWidth">
+                        <el-input v-model="formInline.user.realName" class="dialog_width">{{formInline.user.realName}}</el-input>
+                    </el-form-item>
+                    <el-form-item label="性别" :label-width="formLabelWidth">
+                        <el-radio v-model="formInline.user.sex" label="男">男</el-radio>
+                        <el-radio v-model="formInline.user.sex" label="女">女</el-radio>
+                    </el-form-item>
+                    <el-form-item label="工号" :label-width="formLabelWidth">
+                        <el-input v-model="formInline.user.jobNumber" class="dialog_width"  :disabled="true">{{formInline.user.jobNumber}}</el-input>
+                    </el-form-item>
+                    <el-form-item label="学院" :label-width="formLabelWidth">
+                        <el-select v-model="formInline.user.college" placeholder="请选择">
+                            <el-option
+                                    v-for="item in college_options"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col>
+                    <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
+                        <el-input v-model="formInline.user.email" class="dialog_width">{{formInline.user.email}}</el-input>
+                    </el-form-item>
+                    <el-form-item label="新密码" :label-width="formLabelWidth" prop="pass">
+                        <el-input v-model="formInline.other.pass" class="dialog_width" show-password>{{formInline.other.pass}}</el-input>
+                    </el-form-item>
+                    <el-form-item label="联系电话" :label-width="formLabelWidth">
+                        <el-input v-model="formInline.user.phone" class="dialog_width">{{formInline.user.phone}}</el-input>
+                    </el-form-item>
+                    <el-form-item label="确认密码" :label-width="formLabelWidth" prop="checkPass">
+                        <el-input v-model="formInline.other.checkPass" class="dialog_width" show-password>{{formInline.other.checkPass}}</el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
                 <el-button @click="CVisible.PVisible = false" class="dialog_btn">取 消</el-button>

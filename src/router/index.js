@@ -42,7 +42,7 @@ const routes = [
                 component: Home
             },
             {
-                path: 'applicationform/:id',
+                path: 'applicationform/:status/:id',
                 name: 'applicationform',
                 component: ApplicationForm
             },

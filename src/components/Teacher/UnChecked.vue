@@ -6,12 +6,12 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="课程名称" width="260" align="center">
+                    <el-table-column label="课程名称" width="180" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称"align="center">
+                    <el-table-column label="教材名称" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
@@ -64,7 +64,7 @@
 
 <script>
     import Main from '../Main'
-    import FormDialog from './FormDialog'
+    import FormDialog from '../FormDialog'
     import axios from 'axios'
 
     export default {
@@ -110,12 +110,12 @@
             },
             handleClose(done) {
                 this.$confirm('确认关闭？')
-                    .then(_ => {
+                    .then(() => {
                         done();
                     })
-                    .catch(_ => {});
+                    .catch(() => {});
             },
-            handleLook(index, row) {
+            handleLook(index) {
                 axios.get('/teacher/findtextbook/' + this.tableData[index].id)
                     .then(res => {
                         console.log('FormDialog',res);
@@ -131,7 +131,7 @@
                     type: 'warning'
                 }).then(() => {
                     axios.delete('/teacher/' + this.tableData[index].id)
-                        .then(res => {
+                        .then(() => {
                             if (this.tableData.length !== 1){
                                 this.tableData.splice(index, 1);
                             }
@@ -142,7 +142,7 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                        }).catch(error =>{
+                        }).catch(() =>{
                         this.$message({
                             type: 'success',
                             message: '删除失败!'

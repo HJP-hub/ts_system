@@ -12,12 +12,12 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="申请人" width="210" align="center">
+                    <el-table-column label="申请人" width="140" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{realName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称" width="230" align="center">
+                    <el-table-column label="教材名称" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
@@ -41,11 +41,11 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center">
+                    <el-table-column label="操作" align="center" width="200">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
-                                    @click="handleEdit(scope.$index, scope.row)">审核</el-button>
+                                    @click="handleLook(scope.$index, scope.row)">审核</el-button>
                             <el-button
                                     size="mini"
                                     type="danger"
@@ -64,8 +64,8 @@
                             @current-change="current">
                     </el-pagination>
                 </div>
-
             </div>
+            <FormDialog :PData="CData" @list_req="list_req"></FormDialog>
         </template>
     </Main>
 </template>
@@ -73,42 +73,47 @@
 <script>
     import Main from '../Main'
     import axios from 'axios'
+    import FormDialog from '../FormDialog'
     export default {
         name: "ApplicationFormCheck",
         components: {
-            Main
+            Main,
+            FormDialog
         },
         mounted(){
-            this.user.realName = JSON.parse(sessionStorage.getItem("user")).college;
-            this.college_id = this.collegeName.indexOf(this.user.realName, 0) + 1;
             console.log(this.college_id);
-            axios.get('secretary/college/' + this.college_id + '?page=' + this.req.page + '&size=' +  this.req.size)
-                .then(res =>{
-                    console.log(res);
-                    this.tableData = res.data.data.list;
-                    this.page.total = res.data.data.total;
-                });
+            this.list_req();
             this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         data(){
             return {
                 user:{
-                  realName: ''
+                    college: ''
                 },
                 tableData: [],
+                CData:{
+                    Visible: false,
+                    textbook: '',
+                    tableData: []
+                },
                 req: {
                     page: 1,
                     size: 10
                 },
                 page:{
                     total: 0
-                },
-                collegeName:['电子信息学院' , '机电工程学院', '计算机学院', '材料与食品学院', '人文社会科学学院', '管理学院', '经贸学院', '外国语学院', '艺术设计学院', '马克思主义学院', '体育部']
+                }
             }
         },
         methods: {
-            handleEdit(index, row) {
-                this.$router.push('applicationform/' + this.tableData[index].id)
+            handleLook(index) {
+                axios.get('/teacher/findtextbook/' + this.tableData[index].id)
+                    .then(res => {
+                        console.log('FormDialog',res);
+                        this.CData.textbook = res.data.data.textbook;
+                        this.CData.tableData = res.data.data.class;
+                        this.CData.Visible=true;
+                    });
             },
             handleDelete(index){
                 this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
@@ -117,7 +122,7 @@
                     type: 'warning'
                 }).then(() => {
                     axios.delete('/teacher/' + this.tableData[index].id)
-                        .then(res => {
+                        .then(() => {
                             if (this.tableData.length !== 1){
                                 this.tableData.splice(index, 1);
                             }
@@ -128,7 +133,8 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                        }).catch(error =>{
+                            this.list_req();
+                        }).catch(() =>{
                         this.$message({
                             type: 'success',
                             message: '删除失败!'
@@ -155,6 +161,14 @@
                 axios.get('secretary/college/' + this.college_id + '?page=' + this.req.page + '&size=' +  this.req.size)
                     .then(res =>{
                         console.log('getall:',res);
+                        this.tableData = res.data.data.list;
+                        this.page.total = res.data.data.total;
+                    });
+            },
+            list_req(){
+                axios.get('secretary/textbook/' + 2 + '?page=' + this.req.page + '&size=' +  this.req.size)
+                    .then(res =>{
+                        console.log(res);
                         this.tableData = res.data.data.list;
                         this.page.total = res.data.data.total;
                     });

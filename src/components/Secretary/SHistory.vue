@@ -23,9 +23,9 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col span="4" offset=2>
+                        <el-col span="6" push="2">
                             <el-button type="primary" icon="el-icon-document" class="exportbnt" @click="centerDialogVisible = true">导出</el-button>
-                            <el-button type="danger"icon="el-icon-delete" class="deletetbnt">删除</el-button>
+                            <el-button type="danger" icon="el-icon-delete" class="deletetbnt">删除</el-button>
                         </el-col>
                     </el-row>
                 </el-form>
@@ -36,17 +36,17 @@
                     <el-table-column  width="26" align="center">
                         <el-checkbox></el-checkbox>
                     </el-table-column>
-                    <el-table-column label="申请人" width="180" align="center">
+                    <el-table-column label="申请人" width="140" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{realName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材名称" width="220" align="center">
+                    <el-table-column label="教材名称" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="课程名称" width="220" align="center">
+                    <el-table-column label="课程名称" width="200" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
@@ -69,18 +69,19 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="状态" width="120" align="center">
+                    <el-table-column label="状态" width="80" align="center">
                         <template slot-scope="scope">
-                            <el-tag type="error" v-if="scope.row.status===1">未提交</el-tag>
-                            <el-tag type="error" v-if="scope.row.status===2">驳回</el-tag>
+                            <el-tag v-if="scope.row.status===2">未审核</el-tag>
                             <el-tag type="success" v-else-if="scope.row.status===3">通过</el-tag>
+                            <el-tag type="danger" v-else-if="scope.row.status===4">驳回</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center">
+                    <el-table-column label="操作" align="center" width="200">
                         <template slot-scope="scope">
                             <el-button
+                                    type="primary"
                                     size="mini"
-                                    @click="handleEdit(scope.$index, scope.row)">详情</el-button>
+                                    @click="handleLook(scope.$index, scope.row)">详情</el-button>
                             <el-button
                                     size="mini"
                                     type="danger"
@@ -101,6 +102,7 @@
                 </div>
             </div>
         </template>
+        <FormDialog :PData="CData"></FormDialog>
         <el-dialog
                 title="申请表导出"
                 :visible.sync="centerDialogVisible"
@@ -119,10 +121,12 @@
 <script>
     import Main from '../Main'
     import axios from 'axios'
+    import FormDialog from '../FormDialog'
     export default {
         name: "SHistory",
         components: {
-            Main
+            Main,
+            FormDialog
         },
         mounted(){
             this.user.realName = JSON.parse(sessionStorage.getItem("user")).college;
@@ -138,7 +142,6 @@
         },
         data(){
             return {
-
                 centerDialogVisible: false,
                 formInline: {
                     user: '',
@@ -156,16 +159,23 @@
                     total: 0
                 },
                 collegeName:['电子信息学院' , '机电工程学院', '计算机学院', '材料与食品学院', '人文社会科学学院', '管理学院', '经贸学院', '外国语学院', '艺术设计学院', '马克思主义学院', '体育部'],
-
+                CData:{
+                    Visible: false,
+                    textbook: '',
+                    tableData: []
+                },
 
             }
         },
         methods: {
-            onSubmit() {
-                console.log('submit!');
-            },
-            handleEdit(index, row) {
-                this.$router.push('applicationform/' + this.tableData[index].id)
+            handleLook(index) {
+                axios.get('/teacher/findtextbook/' + this.tableData[index].id)
+                    .then(res => {
+                        console.log('FormDialog',res);
+                        this.CData.textbook = res.data.data.textbook;
+                        this.CData.tableData = res.data.data.class;
+                        this.CData.Visible=true;
+                    });
             },
             handleDelete(index){
                 this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
@@ -174,7 +184,7 @@
                     type: 'warning'
                 }).then(() => {
                     axios.delete('/teacher/' + this.tableData[index].id)
-                        .then(res => {
+                        .then(() => {
                             if (this.tableData.length !== 1){
                                 this.tableData.splice(index, 1);
                             }
@@ -185,7 +195,7 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                        }).catch(error =>{
+                        }).catch(() =>{
                         this.$message({
                             type: 'success',
                             message: '删除失败!'
