@@ -45,9 +45,9 @@
             </el-row>
         </el-form>
         <span slot="footer" class="dialog-footer">
-                <el-button @click="CVisible.PVisible = false" class="dialog_btn">取 消</el-button>
-                <el-button type="primary" @click="updateInfo" class="dialog_btn">保 存</el-button>
-            </span>
+            <el-button @click="CVisible.PVisible = false" class="dialog_btn">取 消</el-button>
+            <el-button type="primary" @click="updateInfo" class="dialog_btn">保 存</el-button>
+        </span>
     </el-dialog>
 </template>
 

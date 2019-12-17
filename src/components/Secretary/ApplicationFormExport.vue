@@ -8,8 +8,11 @@
                         <el-tab-pane label="学院">
                             <el-form :inline="true" :model="formInline" class="mar">
                                 <el-row>
-                                    <el-col span="6" offset="18">
-                                        <el-button type="primary" icon="el-icon-document" >发布任务</el-button>
+                                    <el-col span="5" offset="14">
+                                        <el-button type="primary" icon="el-icon-s-tools" >启动任务</el-button>
+                                    </el-col>
+                                    <el-col span="5">
+                                        <el-button type="danger" icon="el-icon-warning" >停止任务</el-button>
                                     </el-col>
                                 </el-row>
                             </el-form>
@@ -20,12 +23,12 @@
                                 <el-table-column  width="26" align="center">
                                     <el-checkbox></el-checkbox>
                                 </el-table-column>
-                                <el-table-column label="学院名称" width="300" align="center">
+                                <el-table-column label="学院名称" width="350" align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{}}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="学院人数" width="300" align="center">
+                                <el-table-column label="学院人数" width="250" align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{}}</span>
                                     </template>
@@ -33,9 +36,14 @@
                                 <el-table-column label="操作" align="center">
                                     <template slot-scope="scope">
                                         <el-button
-                                                type="info"
-                                                size="medium"
-                                                @click="handleEdit(scope.$index, scope.row)">发布任务
+                                                type="primary"
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">启动任务
+                                        </el-button>
+                                        <el-button
+                                            type="danger"
+                                            size="mini"
+                                            @click="handleEdit(scope.$index, scope.row)">停止任务
                                         </el-button>
                                     </template>
                                 </el-table-column>
@@ -54,14 +62,14 @@
                         </el-tab-pane>
                         <el-tab-pane label="个人">
                             <el-form :inline="true" :model="formInline" class="mar">
-                                <el-row>
-                                    <el-col span="16" offset=4>
-                                        <el-col span="11">
+                                <el-row >
+                                    <el-col span="14">
+                                        <el-col span="13">
                                             <el-form-item label="教师名称">
-                                                <el-input v-model="formInline.user" placeholder="请输入查询的关键词"></el-input>
+                                                <el-input v-model="formInline.user" placeholder="请输入教师名称"></el-input>
                                             </el-form-item>
                                         </el-col>
-                                        <el-col span="11" offset=2>
+                                        <el-col span="11">
                                             <el-form-item>
                                                 <el-select v-model="formInline.region" placeholder="请选择学院">
                                                     <el-option label="电子信息学院" value="shanghai"></el-option>
@@ -80,9 +88,22 @@
                                         </el-col>
 
                                     </el-col>
-                                    <el-col span="4">
-                                        <el-button type="primary" icon="el-icon-document" >发布任务</el-button>
-
+                                    <el-col span="10">
+                                        <el-col span="10" >
+                                            <el-form-item>
+                                                <el-select v-model="formInline.region" placeholder="请选择状态">
+                                                    <el-option label="全部" value="all"></el-option>
+                                                    <el-option label="已启动" value="up"></el-option>
+                                                    <el-option label="停止" value="stop"></el-option>
+                                                </el-select>
+                                            </el-form-item>
+                                        </el-col>
+                                        <el-col span="6">
+                                            <el-button  type="primary" icon="el-icon-s-tools" >启动任务</el-button>
+                                        </el-col>
+                                        <el-col span="6" offset="2">
+                                            <el-button  type="danger" icon="el-icon-warning" >停止任务</el-button>
+                                        </el-col>
                                     </el-col>
                                 </el-row>
                             </el-form>
@@ -93,17 +114,17 @@
                                 <el-table-column  width="26" align="center">
                                     <el-checkbox></el-checkbox>
                                 </el-table-column>
-                                <el-table-column label="教师名称" width="270" align="center">
+                                <el-table-column label="教师名称" width="200" align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{}}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="工号" width="250" align="center">
+                                <el-table-column label="工号" width="230" align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{}}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="学院" width="270" align="center">
+                                <el-table-column label="学院" width="300" align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{}}</span>
                                     </template>
@@ -111,9 +132,14 @@
                                 <el-table-column label="操作" align="center">
                                     <template slot-scope="scope">
                                         <el-button
-                                                type="info"
-                                                size="medium"
-                                                @click="handleEdit(scope.$index, scope.row)">发布任务
+                                                type="primary"
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">启动任务
+                                        </el-button>
+                                        <el-button
+                                                type="danger"
+                                                size="mini"
+                                                @click="handleEdit(scope.$index, scope.row)">停止任务
                                         </el-button>
                                     </template>
                                 </el-table-column>
@@ -181,14 +207,10 @@
                     {},
                     {},
                     {},
-                    {},
-                    {},
-                    {},
-
                 ],
                 req: {
                     page: 1,
-                    size: 8
+                    size: 10
                 },
                 page:{
                     total: 0
