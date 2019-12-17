@@ -111,16 +111,17 @@
                 </div>
                 <div class="boxwidth">
                     <el-row>
-                        <el-col span="7">
-                            <el-button round style="margin-bottom: 10px; margin-top: 20px">单用户导入</el-button><br/>
-                            <el-button round style="margin-bottom: 10px; margin-top: 20px">多用户导入</el-button><br/>
-                            <el-button round style="margin-bottom: 10px; margin-top: 20px">多用户模板</el-button>
+                        <el-col span="4">
+                            <el-button type="primary" round class="btnmar" icon="el-icon-receiving">单用户导入</el-button><br/>
+                            <el-button type="primary" round class="btnmar" icon="el-icon-notebook-2">多用户导入</el-button><br/>
+                            <el-button type="primary" round class="btnmar" icon="el-icon-document-remove">多用户模板</el-button>
 
                         </el-col>
-                        <el-col span="17">
+                        <el-col span="20">
                             <el-card class="box-card" shadow="always">
                                 <div slot="header" class="clearfix">
-                                    <h3>温馨提示</h3>
+                                    <span><i class="el-icon-star-on"><strong>温馨提示</strong></i></span>
+
                                 </div>
                                 <div v-for="(item, index) in tips">
                                     {{index+1}}、{{item}}
@@ -258,5 +259,11 @@
     }
     .marbottom {
         margin-bottom: 10px;
+    }
+    .box-card{
+         margin-top: 20px;
+     }
+    .btnmar {
+        margin-bottom: 10px; margin-top: 20px
     }
 </style>
