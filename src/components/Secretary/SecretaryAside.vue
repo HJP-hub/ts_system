@@ -7,7 +7,7 @@
                  router
                  active-text-color="#ffd04b">
             <el-menu-item index="s_home" :route="{name: 's_home'}"><i class="el-icon-s-home"></i>主页</el-menu-item>
-            <el-menu-item index="applicationformexport" :route="{name: 'applicationformexport'}"><i class="el-icon-edit-outline"></i>启动任务</el-menu-item>
+            <el-menu-item index="applicationformexport" :route="{name: 'applicationformexport'}"><i class="el-icon-edit-outline"></i>任务管理</el-menu-item>
             <el-menu-item index="applicationformcheck" :route="{name: 'applicationformcheck'}"><i class="el-icon-edit"></i>申请审核</el-menu-item>
             <el-menu-item index="s_history" :route="{name: 's_history'}"><i class="el-icon-document-checked"></i>审核历史</el-menu-item>
             <el-menu-item index="usermanagement" :route="{name: 'usermanagement'}"><i class="el-icon-box"></i>用户管理</el-menu-item>
