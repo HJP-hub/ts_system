@@ -218,6 +218,8 @@
                         })
                 }
             }
+            this.formInline.textbook.version = 1;
+            this.formInline.textbook.flag= true;
         },
         data(){
             const validateNull = (rule, value, callback) => {
@@ -408,6 +410,7 @@
             send_update_request(){
                 this.formInline.textbook.teacherId = JSON.parse(sessionStorage.getItem("user")).id;
                 this.formInline.textbook.status = "2";
+                this.formInline.textbook.reviewDate = '';
                 axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
                         console.log('update_class:',res);

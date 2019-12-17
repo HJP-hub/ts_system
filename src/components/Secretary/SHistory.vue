@@ -5,25 +5,27 @@
                 <h1 class="title">申请表历史</h1>
                 <el-form :inline="true" :model="formInline" class="mar">
                     <el-row>
-                        <el-col span="18">
-                            <el-form-item label="查询条件">
-                                <el-select v-model="formInline.region" placeholder="请选择查询条件">
-                                    <el-option label="教师名" value="shanghai"></el-option>
-                                    <el-option label="学院" value="beijing"></el-option>
+                        <el-col :span="18">
+                            <el-form-item label="按学院查询">
+                                <el-select v-model="req.college_id" placeholder="请选择查询条件"  @change="page_request">
+                                    <el-option
+                                            v-for="item in college_options"
+                                            :key="item.value"
+                                            :label="item.label"
+                                            :value="item.value">
+                                    </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="关键词">
-                                <el-input v-model="formInline.user" placeholder="请输入查询的关键词"></el-input>
-                            </el-form-item>
                             <el-form-item label="申请表状态">
-                                <el-select v-model="formInline.region" placeholder="申请表状态" >
-                                    <el-option label="审核" value="checked"></el-option>
-                                    <el-option label="通过" value="pass"></el-option>
-                                    <el-option label="驳回" value="back"></el-option>
+                                <el-select v-model="req.status" placeholder="申请表状态" @change="page_request">
+                                    <el-option label="全部" value="-1"></el-option>
+                                    <el-option label="通过" value="3"></el-option>
+                                    <el-option label="驳回" value="4"></el-option>
+                                    <el-option label="未审核" value="2"></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col span="6" push="2">
+                        <el-col :span="6" :push="2">
                             <el-button type="primary" icon="el-icon-document" class="exportbnt" @click="centerDialogVisible = true">导出</el-button>
                             <el-button type="danger" icon="el-icon-delete" class="deletetbnt">删除</el-button>
                         </el-col>
@@ -129,15 +131,11 @@
             FormDialog
         },
         mounted(){
-            this.user.realName = JSON.parse(sessionStorage.getItem("user")).college;
-            this.college_id = this.collegeName.indexOf(this.user.realName, 0) + 1;
-            console.log(this.college_id);
-            axios.get('secretary/college/' + this.college_id + '?page=' + this.req.page + '&size=' +  this.req.size)
-                .then(res =>{
-                    console.log(res);
-                    this.tableData = res.data.data.list;
-                    this.page.total = res.data.data.total;
-                });
+            this.req.college_id = 0;
+            this.req.status = -1;
+            this.page_request();
+            this.req.college_id = '';
+            this.req.status = '';
             this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         data(){
@@ -153,7 +151,9 @@
                 tableData: [],
                 req: {
                     page: 1,
-                    size: 10
+                    size: 10,
+                    college_id: '',
+                    status: ''
                 },
                 page:{
                     total: 0
@@ -164,7 +164,37 @@
                     textbook: '',
                     tableData: []
                 },
-
+                college_options:[{
+                    value: '0',
+                    label: '全部'
+                }, {
+                    value: '1',
+                    label: '电子信息学院'
+                }, {
+                    value: '2',
+                    label: '机电工程学院'
+                }, {
+                    value: '3',
+                    label: '计算机学院'
+                }, {
+                    value: '4',
+                    label: '材料与食品学院'
+                }, {
+                    value: '5',
+                    label: '人文社会科学学院'
+                }, {
+                    value: '6',
+                    label: '管理学院'
+                }, {
+                    value: '7',
+                    label: '经贸学院'
+                }, {
+                    value: '8',
+                    label: '外国语学院'
+                }, {
+                    value: '9',
+                    label: '艺术设计学院'
+                }],
             }
         },
         methods: {
@@ -219,7 +249,8 @@
                 this.page_request();
             },
             page_request(){
-                axios.get('secretary/college/' + this.college_id + '?page=' + this.req.page + '&size=' +  this.req.size)
+                axios.get('secretary/textbook/history' + '?page=' + this.req.page + '&size=' +
+                    this.req.size + '&status=' + this.req.status + '&collegeId=' + this.req.college_id)
                     .then(res =>{
                         console.log('getall:',res);
                         this.tableData = res.data.data.list;
