@@ -1,7 +1,8 @@
 <template>
     <Main>
         <template>
-            <div class="screen">
+
+            <div class="screen" >
                 <el-carousel :interval="4000" type="card" height="400px">
                     <el-carousel-item v-for="item_src in img_url">
                         <el-image :src="item_src" class="img_item"></el-image>
@@ -119,6 +120,16 @@
             }
         },
         methods: {
+            open1() {
+                const h = this.$createElement;
+
+                this.$notify({
+                    title: '任务通知',
+                    message: h('i', { style: 'color: teal'}, '教材申请表填写任务已开启，请{{}}教师于近期内填写相应的教材申请表。'+
+                        '审核通过后请打印并前往教务处签名并提交。' +
+                        '申请表被驳回请重新阅读填写相关规定并重填')
+                });
+            },
             chang_book(){
                 this.req.page = Math.floor(Math.random()*(this.req.total / 8)) + 1;
                 axios.get('main/' + this.req.college_id  + '?page=' + this.req.page + '&size=' +  this.req.size)  //请求推荐书籍数据
