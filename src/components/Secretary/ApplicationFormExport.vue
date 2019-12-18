@@ -2,7 +2,7 @@
     <Main>
         <template>
             <div>
-                <h1 class="title">启动任务</h1>
+                <h1 class="title">任务管理</h1>
                 <div class="tabwidth">
                     <el-tabs type="border-card" stretch="true" >
                         <el-tab-pane label="学院">
@@ -221,9 +221,7 @@
             }
         },
         methods: {
-            onSubmit() {
-                console.log('submit!');
-            },
+
             handleEdit(index, row) {
                 this.$router.push('applicationform/' + this.tableData[index].id)
             },
