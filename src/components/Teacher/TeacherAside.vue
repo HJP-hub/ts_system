@@ -9,7 +9,7 @@
             <el-menu-item index="home" :route="{name: 'home'}"><i class="el-icon-s-home"></i>主页</el-menu-item>
             <el-submenu index="1">
                 <template slot="title"><i class="el-icon-menu"></i><span>教材申请</span></template>
-                <el-menu-item index="applicationform" :route="{name: 'applicationform'}"><i class="el-icon-edit"></i>填写申请表</el-menu-item>
+                <el-menu-item index="applicationform" :route="{path: 'applicationform/0/-1'}"><i class="el-icon-edit"></i>填写申请表</el-menu-item>
                 <el-menu-item index="waitingsubmit" :route="{name: 'waitingsubmit'}"><i class="el-icon-edit-outline"></i>待提交</el-menu-item>
                 <el-menu-item index="unchecked" :route="{name: 'unchecked'}"><i class="el-icon-document-copy"></i>待审核</el-menu-item>
                 <el-menu-item index="checked" :route="{name: 'checked'}"><i class="el-icon-document-checked"></i>已审核</el-menu-item>

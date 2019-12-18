@@ -14,7 +14,7 @@
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
                     <el-table-column label="申请人" width="140" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{realName}}</span>
+                            <span style="margin-left: 10px">{{scope.row.teacherName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="教材名称" align="center">
@@ -32,7 +32,7 @@
                             <span style="margin-left: 10px">{{scope.row.titleType}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="申请日期" width="160" align="center">
+                    <el-table-column label="申请日期" width="180" align="center">
                         <template slot-scope="scope">
                             <el-date-picker
                                     v-model="scope.row.date"
@@ -41,15 +41,12 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" width="200">
+                    <el-table-column label="操作" align="center" width="120">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"
+                                    type="primary"
                                     @click="handleLook(scope.$index, scope.row)">审核</el-button>
-                            <el-button
-                                    size="mini"
-                                    type="danger"
-                                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -81,9 +78,7 @@
             FormDialog
         },
         mounted(){
-            console.log(this.college_id);
             this.list_req();
-            this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         data(){
             return {
@@ -115,38 +110,6 @@
                         this.CData.Visible=true;
                     });
             },
-            handleDelete(index){
-                this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    axios.delete('/teacher/' + this.tableData[index].id)
-                        .then(() => {
-                            if (this.tableData.length !== 1){
-                                this.tableData.splice(index, 1);
-                            }
-                            if (this.tableData[this.tableData.length - 1].flag !== true){
-                                this.tableData[this.tableData.length - 1].flag = true
-                            }
-                            this.$message({
-                                type: 'success',
-                                message: '删除成功!'
-                            });
-                            this.list_req();
-                        }).catch(() =>{
-                        this.$message({
-                            type: 'success',
-                            message: '删除失败!'
-                        });
-                    })
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
-            },
             prev(){
                 this.req.page -= 1;
             },
@@ -155,20 +118,12 @@
             },
             current(){
                 console.log('current:',this.req.page);
-                this.page_request();
-            },
-            page_request(){
-                axios.get('secretary/college/' + this.college_id + '?page=' + this.req.page + '&size=' +  this.req.size)
-                    .then(res =>{
-                        console.log('getall:',res);
-                        this.tableData = res.data.data.list;
-                        this.page.total = res.data.data.total;
-                    });
+                this.list_req();
             },
             list_req(){
                 axios.get('secretary/textbook/' + 2 + '?page=' + this.req.page + '&size=' +  this.req.size)
                     .then(res =>{
-                        console.log(res);
+                        console.log("getall:",res);
                         this.tableData = res.data.data.list;
                         this.page.total = res.data.data.total;
                     });

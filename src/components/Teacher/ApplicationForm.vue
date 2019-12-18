@@ -9,7 +9,7 @@
                             <el-row>
                                 <el-col :span="12" :push=2>
                                     <div class="form_col form_fir_col">
-                                        <el-form-item label="课程名称" :label-width="formLabelWidth" prop="courseNAME">
+                                        <el-form-item label="课程名称" :label-width="formLabelWidth" prop="courseName">
                                             <el-input v-model="formInline.textbook.courseName" class="input_width"></el-input>
                                         </el-form-item>
                                         <el-form-item label="教材名称" :label-width="formLabelWidth" prop="titleName">
@@ -35,7 +35,7 @@
                                 </el-col>
                                 <el-col :span="12" :push=2>
                                     <div class="form_col">
-                                        <el-form-item label="课程学时数" :label-width="formLabelWidth">
+                                        <el-form-item label="课程学时数" :label-width="formLabelWidth" prop="positive">
                                             <el-input v-model="formInline.textbook.courseTime" class="input_width" type="number" min="0"></el-input>
                                         </el-form-item>
                                         <el-form-item label="出版单位" :label-width="formLabelWidth" prop="publisher">
@@ -223,14 +223,23 @@
         },
         data(){
             const validateNull = (rule, value, callback) => {
+                console.log(rule);
                 if(this.formInline.textbook[rule.field] === ''){
-                    if (rule.field === 'courseNAME'){
+                    if (rule.field === 'courseName'){
                         callback("请输入课程名称");
                     }else if(rule.field === 'titleName'){
                         callback("请输入教材名称");
                     }else if(rule.field === 'publisher'){
                         callback("请输入出版社名称");
                     }
+                } else {
+                    callback();
+                }
+            };
+            const validatePositive = (rule, value, callback) => {
+                console.log(rule);
+                if(this.formInline.textbook.courseTime < 0){
+                    callback("请输入正数")
                 } else {
                     callback();
                 }
@@ -303,7 +312,7 @@
                 ],
                 checked: false,
                 rules:{
-                    courseNAME: [
+                    courseName: [
                         { required: true,  validator: validateNull, trigger: 'blur' },
                     ],
                     titleName: [
@@ -312,7 +321,9 @@
                     publisher: [
                         { required: true, validator: validateNull, trigger: 'blur' }
                     ],
-
+                    positive: [
+                        {validator: validatePositive, trigger: 'blur'}
+                    ]
                 }
             }
         },

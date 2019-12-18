@@ -38,8 +38,8 @@
                             <img :src=book.imageUrl>
                             <div class="book_Info">
                                 <div>
-                                    <p><el-link :href=book.bookUrl type="primary">{{book.titleName.slice(0,book.titleName.length>15?15:book.titleName.length) + '...'}}</el-link></p>
-                                    <span>{{book.author.slice(0,book.author.length>12?12:book.author.length) + '...'}}&nbsp;/&nbsp;</span>
+                                    <p><el-link :href=book.bookUrl type="primary">{{book.titleName===undefined?book.titleName:book.titleName.substring(0,book.titleName.length>15?15:book.titleName.length) + '...'}}</el-link></p>
+                                    <span>{{book.author===undefined?book.author:book.author.substring(0,book.author.length>12?12:book.author.length) + '...'}}&nbsp;/&nbsp;</span>
                                     <span>{{book.titleDate}}&nbsp;/&nbsp;</span>
                                     <span>{{book.publisher}}</span>
                                 </div>
@@ -66,7 +66,7 @@
         mounted(){
             this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
             this.user.college = JSON.parse(sessionStorage.getItem("user")).college;
-            this.req.college_id = this.collegeName.indexOf(this.user.college, 0) + 1;
+            this.req.college_id = this.$store.state.collegeName.indexOf(this.user.college, 0) + 1;
             axios.get('teacher/statistics/' + this.user_id)  //请求各类型表的数目
                 .then(res => {
                     console.log("home_formnum:", res);
@@ -96,7 +96,7 @@
                     id: '',
                     bookUrl: '',
                     imageUrl: '',
-                    titleName: '',
+                    titleName: ' ',
                     author:'',
                     titleDate: '',
                     publisher: '',
@@ -105,10 +105,10 @@
                     PVisible: false
                 },
                 FormNum: {
-                    unSubmit: '',
-                    unReview: '',
-                    review: '',
-                    count: ''
+                    unSubmit: 0,
+                    unReview: 0,
+                    review: 0,
+                    count: 0
                 },
                 req: {
                     page: 1,
@@ -116,7 +116,6 @@
                     college_id: 0,
                     total: 600,
                 },
-                collegeName:['电子信息学院' , '机电工程学院', '计算机学院', '材料与食品学院', '人文社会科学学院', '管理学院', '经贸学院', '外国语学院', '艺术设计学院', '马克思主义学院', '体育部']
             }
         },
         methods: {

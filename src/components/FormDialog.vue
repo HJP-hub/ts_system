@@ -169,7 +169,6 @@
                     {
                         headers:{
                             'Content-Type': 'text/plain',
-                            // 'processData': false,
                         }
                     }
                 ).then(res => {

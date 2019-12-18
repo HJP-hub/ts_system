@@ -124,6 +124,7 @@
                             type: 'success',
                             message: '删除失败!'
                         });
+                        this.page_request();
                     })
                 }).catch(() => {
                     this.$message({

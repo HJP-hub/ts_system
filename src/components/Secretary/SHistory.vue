@@ -5,7 +5,7 @@
                 <h1 class="title">申请表历史</h1>
                 <el-form :inline="true" :model="formInline" class="mar">
                     <el-row>
-                        <el-col :span="18">
+                        <el-col :span="18" :push="1" class="select_row">
                             <el-form-item label="按学院查询">
                                 <el-select v-model="req.college_id" placeholder="请选择查询条件"  @change="page_request">
                                     <el-option
@@ -25,22 +25,23 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="6" :push="2">
-                            <el-button type="primary" icon="el-icon-document" class="exportbnt" @click="centerDialogVisible = true">导出</el-button>
-                            <el-button type="danger" icon="el-icon-delete" class="deletetbnt">删除</el-button>
+                        <el-col :span="6" :push="3">
+                            <el-button type="primary" icon="el-icon-document" class="exportbnt" @click="export_list">导出</el-button>
                         </el-col>
                     </el-row>
                 </el-form>
 
                 <el-table
                         :data="tableData"
-                        style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column  width="26" align="center">
-                        <el-checkbox></el-checkbox>
+                        style="width: 80%; margin-top: 30px; margin-left: 11%"
+                        @selection-change="handleSelectionChange">
+                    <el-table-column
+                            type="selection"
+                            width="55">
                     </el-table-column>
                     <el-table-column label="申请人" width="140" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{realName}}</span>
+                            <span style="margin-left: 10px">{{scope.row.teacherName}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="教材名称" align="center">
@@ -71,23 +72,19 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="状态" width="80" align="center">
+                    <el-table-column label="状态" width="100" align="center">
                         <template slot-scope="scope">
                             <el-tag v-if="scope.row.status===2">未审核</el-tag>
                             <el-tag type="success" v-else-if="scope.row.status===3">通过</el-tag>
                             <el-tag type="danger" v-else-if="scope.row.status===4">驳回</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" width="200">
+                    <el-table-column label="操作" align="center" width="120">
                         <template slot-scope="scope">
                             <el-button
                                     type="primary"
                                     size="mini"
-                                    @click="handleLook(scope.$index, scope.row)">详情</el-button>
-                            <el-button
-                                    size="mini"
-                                    type="danger"
-                                    @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                                    @click="handleLook(scope.$index)">详情</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -104,19 +101,7 @@
                 </div>
             </div>
         </template>
-        <FormDialog :PData="CData"></FormDialog>
-        <el-dialog
-                title="申请表导出"
-                :visible.sync="centerDialogVisible"
-                width="28%"
-                top="360px"
-                center>
-            <h3><span class="dialogtip">请认真阅读完温馨提示后再导出申请表 !</span></h3>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" class="dialogbtn_left">批量导出</el-button>
-                <el-button type="primary">格式化导出</el-button>
-            </span>
-        </el-dialog>
+        <FormDialog :PData="CData" @list_req="page_request"></FormDialog>
     </Main>
 </template>
 
@@ -136,29 +121,21 @@
             this.page_request();
             this.req.college_id = '';
             this.req.status = '';
-            this.realName = JSON.parse(sessionStorage.getItem("user")).realName;
         },
         data(){
             return {
-                centerDialogVisible: false,
-                formInline: {
-                    user: '',
-                    region: ''
-                },
-                user:{
-                    realName: ''
-                },
+                formInline: {},
                 tableData: [],
                 req: {
                     page: 1,
                     size: 10,
                     college_id: '',
-                    status: ''
+                    status: '',
+                    list_id: []
                 },
                 page:{
                     total: 0
                 },
-                collegeName:['电子信息学院' , '机电工程学院', '计算机学院', '材料与食品学院', '人文社会科学学院', '管理学院', '经贸学院', '外国语学院', '艺术设计学院', '马克思主义学院', '体育部'],
                 CData:{
                     Visible: false,
                     textbook: '',
@@ -207,37 +184,6 @@
                         this.CData.Visible=true;
                     });
             },
-            handleDelete(index){
-                this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    axios.delete('/teacher/' + this.tableData[index].id)
-                        .then(() => {
-                            if (this.tableData.length !== 1){
-                                this.tableData.splice(index, 1);
-                            }
-                            if (this.tableData[this.tableData.length - 1].flag !== true){
-                                this.tableData[this.tableData.length - 1].flag = true
-                            }
-                            this.$message({
-                                type: 'success',
-                                message: '删除成功!'
-                            });
-                        }).catch(() =>{
-                        this.$message({
-                            type: 'success',
-                            message: '删除失败!'
-                        });
-                    })
-                }).catch(() => {
-                    this.$message({
-                        type: 'info',
-                        message: '已取消删除'
-                    });
-                });
-            },
             prev(){
                 this.req.page -= 1;
             },
@@ -256,6 +202,19 @@
                         this.tableData = res.data.data.list;
                         this.page.total = res.data.data.total;
                     });
+            },
+            handleSelectionChange(val) {
+                this.req.list_id = val;
+                for (let i = 0; i < this.req.list_id.length; i++){
+                    this.req.list_id[i] = this.req.list_id[i].id;
+                }
+            },
+            export_list(){
+                axios.post("secretary/excel/out",this.req.list_id)
+                    .then(res => {
+                        console.log("export_list:",res);
+                        location.href = 'http://172.16.61.151:9090/api/file/' + res.data.data;
+                    })
             }
         }
     }
@@ -292,6 +251,9 @@
         width: 80%;
         margin: 0 auto;
         padding-top: 1%;
+    }
+    .select_row{
+        margin-bottom: -4%;
     }
     .dialogtip {
         margin-left: 21%;
