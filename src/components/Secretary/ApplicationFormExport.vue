@@ -94,6 +94,7 @@
                                 <el-table-column label="操作" align="center" width="200">
                                     <template slot-scope="scope">
                                         <el-button
+                                                :plain="true"
                                                 type="primary"
                                                 size="mini"
                                                 @click="handleOperateT(scope.$index,1)"
@@ -174,8 +175,13 @@
                   axios.put('secretary/teacher/' + status + '/' + college_id)
                       .then(res => {
                           if (status){
+                              this.$message({
+                                  message: '任务启动成功！！！',
+                                  type: 'success'
+                              });
                               console.log("success start_task:", res)
                           }else{
+                              this.$message.warning('任务已停止！！！');
                               console.log("success stop_task:", res)
                           }
                       })
@@ -194,8 +200,16 @@
                 axios.put('secretary/teacher/' + status,this.req.list_id)
                     .then(res => {
                         if (status){
-                            console.log("success start_task:", res)
+                            console.log("success start_task:", res);
+                            this.$message({
+                                message: '任务启动成功！！！',
+                                type: 'success'
+                            });
                         }else{
+                            this.$message({
+                                message: '任务已停止！！！',
+                                type: 'warning'
+                            });
                             console.log("success stop_task:", res)
                         }
                         this.teacher_request();
