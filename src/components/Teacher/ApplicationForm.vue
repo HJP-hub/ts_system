@@ -185,6 +185,7 @@
     export default {
         name: "ApplicationForm",
         mounted(){
+            this.user.startTask = JSON.parse(sessionStorage.getItem("user")).startTask;
             if (this.$route.params.id !== '-1'){
                 this.route_params.id = this.$route.params.id;
                 this.route_params.status = this.$route.params.status;
@@ -223,7 +224,6 @@
         },
         data(){
             const validateNull = (rule, value, callback) => {
-                console.log(rule);
                 if(this.formInline.textbook[rule.field] === ''){
                     if (rule.field === 'courseName'){
                         callback("请输入课程名称");
@@ -237,7 +237,6 @@
                 }
             };
             const validatePositive = (rule, value, callback) => {
-                console.log(rule);
                 if(this.formInline.textbook.courseTime < 0){
                     callback("请输入正数")
                 } else {
@@ -249,6 +248,9 @@
                 route_params:{
                     id: '',
                     status: ''
+                },
+                user: {
+                    startTask: ''
                 },
                 formInline:{
                     textbook: {
@@ -271,7 +273,7 @@
                 tableData: [{
                     grade:'',
                     subject: '',
-                    number: '',
+                    number: 0,
                     classType:'',
                     date: '',
                     flag: true
@@ -345,18 +347,27 @@
                 const newline = {
                     grade:'',
                     subject: '',
-                    number: '',
+                    number: 0,
                     classType:'',
                     date: '',
                     flag: true
                 };
                 this.$set(this.tableData[index], 'flag', false);
                 this.tableData.push(newline);
+                if (index === 3){
+                    this.$set(this.tableData[index+1], 'flag', false);
+                }
             },
             submit(formName){
-                this.valid(formName, 0);
-                this.formInline.textbook.status = 2;
-
+                if (this.user.startTask === 0){
+                    this.$message({
+                        message: '填写任务未启动，提交申请表失败，请先保存以免数据丢失',
+                        type: 'warning'
+                    });
+                }else{
+                    this.valid(formName, 0);
+                    this.formInline.textbook.status = 2;
+                }
             },
             save(formName) {
                this.valid(formName, 1);
@@ -367,13 +378,18 @@
                     if (valid) {
                        /* alert('submit!');*/
                         if(flag === 0) {
-                            this.$message({
-                                type: 'success',
-                                message: '提交成功'
-                            });
-                            setTimeout(() =>{
-                                this.$router.push('/teacher/unchecked')
-                            },1200)
+                            if (this.tableData[0].number === 0 && this.tableData.length === 1){
+                                this.$message.error('开课班级不能为空');
+                                return false;
+                            }else{
+                                this.$message({
+                                    type: 'success',
+                                    message: '提交成功'
+                                });
+                                setTimeout(() =>{
+                                    this.$router.push('/teacher/unchecked')
+                                },1200)
+                            }
                         }
                         else {
                             this.$message({
