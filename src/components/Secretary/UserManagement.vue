@@ -1,61 +1,54 @@
 <template>
     <Main>
         <template>
-            <div>
-                <h1 class="title">用户管理</h1>
-                <el-form :inline="true" :model="formInline" class="mar">
-                    <el-row >
-                        <el-col span="17" offset="1">
-                            <el-col span="11">
-                                <el-form-item label="查询条件">
-                                    <el-select v-model="formInline.region" placeholder="请选择查询条件">
-                                        <el-option label="教师名称" value="shanghai"></el-option>
-                                        <el-option label="学院" value="beijing"></el-option>
-                                    </el-select>
-                                </el-form-item>
-                            </el-col>
-                            <el-col span="12" offset="1">
-                                <el-form-item label="关键词">
-                                    <el-input v-model="formInline.user" placeholder="请输入查询的关键词"></el-input>
-                                </el-form-item>
-                            </el-col>
-                        </el-col>
-                        <el-col span="6">
-                            <el-col span="11" offset=1>
-                                <el-button type="primary" icon="el-icon-document" >查询</el-button>
-                            </el-col>
-                            <el-col span="11" offset=1>
-                                <el-button type="danger"icon="el-icon-delete" class="deletetbnt">删除</el-button>
-                            </el-col>
-                        </el-col>
-                    </el-row>
-                </el-form>
-                <div class="boxwidth">
-                    <el-row>
-                        <el-col span="15">
+            <h1 class="title">用户管理</h1>
+            <el-row class="mar">
+                <el-row>
+                    <el-col :span="16">
+                        <el-select v-model="req.college_id" placeholder="请选择学院" @change="teacher_request">
+                            <el-option label="全部" value="0"></el-option>
+                            <el-option label="电子信息学院" value="1"></el-option>
+                            <el-option label="机电工程学院" value="2"></el-option>
+                            <el-option label="计算机学院" value="3"></el-option>
+                            <el-option label="材料与食品学院" value="4"></el-option>
+                            <el-option label="人文社会科学学院" value="5"></el-option>
+                            <el-option label="管理学院" value="6"></el-option>
+                            <el-option label="经贸学院" value="7"></el-option>
+                            <el-option label="外国语学院" value="8"></el-option>
+                            <el-option label="艺术设计学院" value="9"></el-option>
+                            <el-option label="马克思主义学院" value="10"></el-option>
+                            <el-option label="体育部" value="11"></el-option>
+                        </el-select>
+                        <div class="table">
                             <el-table
-                                    :data="tableData">
-                                <el-table-column  width="26" align="center">
-                                    <el-checkbox></el-checkbox>
-                                </el-table-column>
+                                    :data="teacher_info">
                                 <el-table-column label="教师名称" width="200" align="center">
                                     <template slot-scope="scope">
-                                        <span style="margin-left: 10px">a</span>
+                                        <span style="margin-left: 10px">{{scope.row.realName}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="工号" width="120" align="center">
                                     <template slot-scope="scope">
-                                        <span style="margin-left: 10px">001</span>
+                                        <span style="margin-left: 10px">{{scope.row.jobNumber}}</span>
                                     </template>
                                 </el-table-column>
                                 <el-table-column label="学院" width="250" align="center">
                                     <template slot-scope="scope">
-                                        <span style="margin-left: 10px">计算机学院</span>
+                                        <span style="margin-left: 10px">{{scope.row.college}}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="历史申请" align="center">
+                                <el-table-column label="任务状态" align="center">
                                     <template slot-scope="scope">
-                                        <el-tag><span style="margin-left: 10px">已审核</span></el-tag>
+                                        <el-tag type="success" v-if="scope.row.startTask===1">启动</el-tag>
+                                        <el-tag type="danger" v-else>停止</el-tag>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="操作" align="center" width="120">
+                                    <template slot-scope="scope">
+                                        <el-button
+                                                size="mini"
+                                                type="danger"
+                                                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -64,74 +57,77 @@
                                         background
                                         layout="prev, pager, next"
                                         :total="page.total"
+                                        :page-size="req.size"
                                         :current-page.sync="req.page"
                                         @prev-click="prev"
                                         @next-click="next"
                                         @current-change="current">
                                 </el-pagination>
                             </div>
-                        </el-col>
-                        <el-col span="8" offset="1">
-                            <div id="form">
-                                <div id="text">
-                                    <el-form label-position="left" ref="form" :model="form" label-width="80px">
-                                        <el-form-item class="marbottom" label="教师名称">
-                                            <el-input class="input_width" width="30px" size="small" v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item class="marbottom" label="工号">
-                                            <el-input class="input_width" size="small" v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item class="marbottom" label="学院">
-                                            <el-input class="input_width" size="small" v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item class="marbottom" label="性别">
-                                            <el-input class="input_width" size="small" v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item class="marbottom" label="邮箱">
-                                            <el-input class="input_width" size="small" v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item class="marbottom" label="联系电话">
-                                            <el-input class="input_width" size="small" v-model="form.name"></el-input>
-                                        </el-form-item>
-                                        <el-form-item class="marbottom" label="新密码">
-                                            <el-input class="input_width" size="small" v-model="form.name" show-password></el-input>
-                                        </el-form-item>
-                                        <el-form-item class="marbottom" label="确认密码">
-                                            <el-input class="input_width" size="small" v-model="form.name" show-password></el-input>
-                                        </el-form-item>
-                                        <el-form-item>
-                                            <el-button style="margin-left: 14%;" type="primary">确认修改</el-button>
-                                        </el-form-item>
-                                    </el-form>
-                                </div>
+                        </div>
+                    </el-col>
+                    <el-col :span="7" :push="2">
+                        <div id="form">
+                            <h2 class="title form_title">添加教师用户</h2>
+                            <div id="text">
+                                <el-form label-position="left" ref="form" :model="form" label-width="80px">
+                                    <el-form-item class="marbottom" label="教师名称">
+                                        <el-input class="input_width" width="30px" size="small" v-model="form.userName"></el-input>
+                                    </el-form-item>
+                                    <el-form-item class="marbottom" label="工号">
+                                        <el-input class="input_width" size="small" v-model="form.jobNumber"></el-input>
+                                    </el-form-item>
+                                    <el-form-item class="marbottom" label="学院">
+                                        <el-select v-model="formInline.college" placeholder="请选择" size="small" class="input_width">
+                                            <el-option
+                                                    v-for="item in college_options"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value">
+                                            </el-option>
+                                        </el-select>
+                                    </el-form-item>
+                                    <el-form-item class="marbottom" label="性别">
+                                        <el-radio v-model="formInline.sex" label="男" border>男</el-radio>
+                                        <el-radio v-model="formInline.sex" label="女" border>女</el-radio>
+                                    </el-form-item>
+                                    <el-form-item class="marbottom" label="邮箱">
+                                        <el-input class="input_width" size="small" v-model="form.email"></el-input>
+                                    </el-form-item>
+                                    <el-form-item class="marbottom" label="联系电话">
+                                        <el-input class="input_width" size="small" v-model="form.phone"></el-input>
+                                    </el-form-item>
+                                    <el-form-item class="marbottom" label="用户名">
+                                        <el-input class="input_width" size="small" v-model="form.jobNumber" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item class="marbottom" label="密码">
+                                        <el-input class="input_width" size="small" v-model="form.jobNumber" disabled></el-input>
+                                    </el-form-item>
+                                    <el-form-item>
+                                        <el-button style="margin-left: 14%;" type="primary" @click="AddUser">确认添加</el-button>
+                                    </el-form-item>
+                                </el-form>
                             </div>
-
-                        </el-col>
-                    </el-row>
-                </div>
-                <div class="boxwidth">
-                    <el-row>
-                        <el-col span="4">
-                            <el-button type="primary" round class="btnmar" icon="el-icon-receiving">单用户导入</el-button><br/>
-                            <el-button type="primary" round class="btnmar" icon="el-icon-notebook-2">多用户导入</el-button><br/>
-                            <el-button type="primary" round class="btnmar" icon="el-icon-document-remove">多用户模板</el-button>
-
-                        </el-col>
-                        <el-col span="20">
-                            <el-card class="box-card" shadow="always">
-                                <div slot="header" class="clearfix">
-                                    <span><i class="el-icon-star-on"><strong>温馨提示</strong></i></span>
-
-                                </div>
-                                <div v-for="(item, index) in tips">
-                                    {{index+1}}、{{item}}
-                                </div>
-                            </el-card>
-                        </el-col>
-                    </el-row>
-                </div>
-
-            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </el-row>
+            <el-row class="mar">
+                <el-col :span="4">
+                    <el-button type="primary" round class="btnmar" icon="el-icon-document-remove">多用户模板</el-button><br/>
+                    <el-button type="primary" round class="btnmar" icon="el-icon-notebook-2">多用户导入</el-button>
+                </el-col>
+                <el-col :span="20">
+                    <el-card class="box-card" shadow="always">
+                        <div slot="header" class="clearfix">
+                            <span><i class="el-icon-star-on"><strong>温馨提示</strong></i></span>
+                        </div>
+                        <div v-for="(item, index) in tips">
+                            {{index+1}}、{{item}}
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
         </template>
     </Main>
 </template>
@@ -145,7 +141,7 @@
                 Main
         },
         mounted(){
-
+            this.teacher_request();
         },
         data(){
             return {
@@ -155,46 +151,62 @@
                     '修改秘书用户信息请联系数据库管理员'
                 ],
                 form: {
-                    name: '',
-                    region: '',
-                    date1: '',
-                    date2: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                    userName: '',
+                    jobNumber: '',
+                    college: '',
+                    sex: '',
+                    email: '',
+                    phone: '',
                 },
-
                 centerDialogVisible: false,
                 formInline: {
                     user: '',
-                    region: ''
+                    region: '',
                 },
                 user:{
                     realName: ''
                 },
-                tableData: [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-                ],
+                teacher_info: [],
                 req: {
                     page: 1,
-                    size: 5
+                    size: 7,
+                    startTask: '',
+                    college_id: ''
                 },
                 page:{
                     total: 0
                 },
+                college_options:[{
+                    value: '电子信息学院',
+                    label: '电子信息学院'
+                }, {
+                    value: '机电工程学院',
+                    label: '机电工程学院'
+                }, {
+                    value: '计算机学院',
+                    label: '计算机学院'
+                }, {
+                    value: '材料与食品学院',
+                    label: '材料与食品学院'
+                }, {
+                    value: '人文社会科学学院',
+                    label: '人文社会科学学院'
+                }, {
+                    value: '管理学院',
+                    label: '管理学院'
+                }, {
+                    value: '经贸学院',
+                    label: '经贸学院'
+                }, {
+                    value: '外国语学院',
+                    label: '外国语学院'
+                }, {
+                    value: '艺术设计学院',
+                    label: '艺术设计学院'
+                }],
             }
         },
         methods: {
-            onSubmit() {
-                console.log('submit!');
-            },
             prev(){
                 this.req.page -= 1;
             },
@@ -203,15 +215,51 @@
             },
             current(){
                 console.log('current:',this.req.page);
-                this.page_request();
+                this.teacher_request();
             },
-            page_request(){
-                axios.get('secretary/college/' + this.college_id + '?page=' + this.req.page + '&size=' +  this.req.size)
+            teacher_request(){
+                axios.get('secretary/teacher' + '?page=' + this.req.page + '&size=' +  this.req.size + '&startTask=' + this.req.startTask + '&collegeId=' + this.req.college_id)
                     .then(res =>{
-                        console.log('getall:',res);
-                        this.tableData = res.data.data.list;
+                        console.log('teacher_list:',res);
+                        this.teacher_info = res.data.data.list;
                         this.page.total = res.data.data.total;
                     });
+            },
+            handleDelete(index){
+                this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    axios.delete('/secretary/teacher/' + this.teacher_info[index].id)
+                        .then(() => {
+                            if (this.teacher_info.length !== 1){
+                                this.teacher_info.splice(index, 1);
+                            }
+                            this.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        }).catch(() =>{
+                        this.$message({
+                            type: 'success',
+                            message: '删除失败!'
+                        });
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            AddUser(){
+                axios.post("secretary/teacher",this.form)
+                    .then(res => {
+                        console.log("success adduser:", res);
+                    }).catch(error => {
+                        console.log("error adduser:", error);
+                })
             }
         }
 
@@ -220,7 +268,6 @@
 </script>
 
 <style scoped>
-
     .title{
         margin-top: 1%;
         font-size: 50px;
@@ -234,20 +281,20 @@
         margin: 0 auto;
         padding-top: 1%;
     }
-    .boxwidth {
-        width: 80%;
-        margin: 25px auto;
-
+    .table{
+        margin-top: 10px;
     }
     .page{
         margin-top: 20px;
         text-align: center;
     }
     #form {
-        margin: 10px auto;
         border: 1px solid;
         border-radius: 20px;
         padding-top: 10px;
+    }
+    #form .form_title{
+        font-size: 36px;
     }
     .input_width{
         margin-left: 2%;
@@ -263,6 +310,6 @@
          margin-top: 20px;
      }
     .btnmar {
-        margin-bottom: 10px; margin-top: 20px
+        margin-top: 50px
     }
 </style>

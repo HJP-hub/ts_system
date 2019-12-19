@@ -422,6 +422,9 @@
                 this.formInline.textbook.teacherId = JSON.parse(sessionStorage.getItem("user")).id;
                 this.formInline.textbook.status = "2";
                 this.formInline.textbook.reviewDate = '';
+                for (let i = 0; i < this.tableData.length; i++){
+                    this.tableData[i].textbookId = '';
+                }
                 axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
                         console.log('update_class:',res);

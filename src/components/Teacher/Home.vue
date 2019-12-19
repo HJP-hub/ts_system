@@ -67,6 +67,7 @@
         mounted(){
             this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
             this.user.college = JSON.parse(sessionStorage.getItem("user")).college;
+            this.user.startTask = JSON.parse(sessionStorage.getItem("user")).startTask;
             this.req.college_id = this.$store.state.collegeName.indexOf(this.user.college, 0) + 1;
             axios.get('teacher/statistics/' + this.user_id)  //请求各类型表的数目
                 .then(res => {
@@ -79,7 +80,10 @@
                     console.log("book:", res);
                     this.books = res.data.data.list;
                     this.req.total = res.data.data.total;
-                })
+                });
+            if (this.user.startTask === 1){
+                this.open1();
+            }
         },
         data(){
             return {
@@ -122,12 +126,10 @@
         methods: {
             open1() {
                 const h = this.$createElement;
-
                 this.$notify({
                     title: '任务通知',
-                    message: h('i', { style: 'color: teal'}, '教材申请表填写任务已开启，请{{}}教师于近期内填写相应的教材申请表。'+
-                        '审核通过后请打印并前往教务处签名并提交。' +
-                        '申请表被驳回请重新阅读填写相关规定并重填')
+                    offset: 70,
+                    message: h('i', { style: 'color: teal'}, '教材申请表填写任务已开启，请您于近期内填写相应的教材申请表。')
                 });
             },
             chang_book(){

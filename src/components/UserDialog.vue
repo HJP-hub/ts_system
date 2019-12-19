@@ -8,7 +8,7 @@
             <el-row>
                 <el-col>
                     <el-form-item label="用户名" :label-width="formLabelWidth">
-                        <el-input v-model="formInline.user.realName" class="dialog_width">{{formInline.user.realName}}</el-input>
+                        <el-input v-model="formInline.user.userName" class="dialog_width">{{formInline.user.userName}}</el-input>
                     </el-form-item>
                     <el-form-item label="性别" :label-width="formLabelWidth">
                         <el-radio v-model="formInline.user.sex" label="男">男</el-radio>
