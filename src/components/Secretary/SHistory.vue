@@ -139,7 +139,8 @@
                 CData:{
                     Visible: false,
                     textbook: '',
-                    tableData: []
+                    tableData: [],
+                    teacherName: ''
                 },
                 college_options:[{
                     value: '0',
@@ -181,6 +182,7 @@
                         console.log('FormDialog',res);
                         this.CData.textbook = res.data.data.textbook;
                         this.CData.tableData = res.data.data.class;
+                        this.CData.teacherName = this.tableData[index].teacherName;
                         this.CData.Visible=true;
                     });
             },

@@ -85,7 +85,7 @@
         <el-row>
             <el-col :span=10 :offset=4>
                 <div class="applyTableShow">
-                    <p class="marginTop"><span class="key-name">教师:</span><span>{{user.realName}}</span></p>
+                    <p class="marginTop"><span class="key-name">教师:</span><span>{{PData.teacherName}}</span></p>
                     <div v-if="textbook.status===3 || textbook.status===4">
                         <p class="marginTop"><span class="key-name">申请时间:</span>{{textbook.date.split('T')[0]}}<span></span></p>
                         <p class="marginTop"><span class="key-name">审评意见:</span>{{textbook.reviewOpinion}}<span></span></p>
@@ -116,7 +116,7 @@
                             <el-radio v-model="status" :label=4 border>驳回</el-radio>
                         </p>
                         <el-row>
-                            <el-col push=3>
+                            <el-col :push=3>
                                 <p class="marginTop"><el-button type="primary" @click="submit">确认审核</el-button></p>
                             </el-col>
                         </el-row>
@@ -177,7 +177,8 @@
                         message: '审核成功',
                         type: 'success'
                     });
-                    this._props.PData.Visible = false;
+                    this.reviewOpinion = '';
+                    this.close();
                     this.$emit('list_req');
                 }).catch(() => {
                     this.$message.error('审核失败');

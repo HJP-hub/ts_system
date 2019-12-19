@@ -29,7 +29,9 @@
                     </el-form-item>
                 </el-col>
                 <el-col>
-                    <el-form-item label="邮箱" :label-width="formLabelWidth" prop="email">
+                    <el-form-item label="邮箱"
+                                  :label-width="formLabelWidth"
+                                  prop="email">
                         <el-input v-model="formInline.user.email" class="dialog_width">{{formInline.user.email}}</el-input>
                     </el-form-item>
                     <el-form-item label="新密码" :label-width="formLabelWidth" prop="pass">
@@ -79,7 +81,9 @@
             return {
                 formLabelWidth: '100px',
                 formInline: {
-                    user: '',
+                    user: {
+                        email: ''
+                    },
                     other:{
                         checkPass: '',
                         pass: ""

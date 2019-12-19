@@ -87,7 +87,7 @@
                                         label="人数"
                                         width="100">
                                     <template slot-scope="scope">
-                                        <el-input v-model="scope.row.number" type="number" min="0"></el-input>
+                                        <el-input v-model="scope.row.number" type="number" min="0" @change="scope.row.number=scope.row.number>0?scope.row.number:0"></el-input>
                                     </template>
                                 </el-table-column>
                                 <el-table-column

@@ -70,11 +70,15 @@
                         <div id="form">
                             <h2 class="title form_title">添加教师用户</h2>
                             <div id="text">
-                                <el-form label-position="left" ref="form" :model="form" label-width="80px">
-                                    <el-form-item class="marbottom" label="教师名称">
+                                <el-form label-position="left"
+                                         ref="form"
+                                         :model="form"
+                                         label-width="80px"
+                                         :rules="rules">
+                                    <el-form-item class="marbottom" label="教师名称" prop="realName">
                                         <el-input class="input_width" width="30px" size="small" v-model="form.realName"></el-input>
                                     </el-form-item>
-                                    <el-form-item class="marbottom" label="工号">
+                                    <el-form-item class="marbottom" label="工号" prop="jobNumber">
                                         <el-input class="input_width" size="small" v-model="form.jobNumber"></el-input>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="学院">
@@ -91,11 +95,11 @@
                                         <el-radio v-model="form.sex" label="男" border>男</el-radio>
                                         <el-radio v-model="form.sex" label="女" border>女</el-radio>
                                     </el-form-item>
-                                    <el-form-item class="marbottom" label="邮箱">
+                                    <el-form-item class="marbottom" label="邮箱" prop="email">
                                         <el-input class="input_width" size="small" v-model="form.email"></el-input>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="联系电话">
-                                        <el-input class="input_width" size="small" v-model="form.phone"></el-input>
+                                        <el-input class="input_width" size="small" v-model="form.phone" type="tel"></el-input>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="用户名">
                                         <el-input class="input_width" size="small" v-model="form.jobNumber" disabled></el-input>
@@ -104,7 +108,7 @@
                                         <el-input class="input_width" size="small" v-model="form.jobNumber" disabled></el-input>
                                     </el-form-item>
                                     <el-form-item>
-                                        <el-button style="margin-left: 14%;" type="primary" @click="AddUser">确认添加</el-button>
+                                        <el-button style="margin-left: 14%;" type="primary" @click="AddUser('form')">确认添加</el-button>
                                     </el-form-item>
                                 </el-form>
                             </div>
@@ -156,7 +160,7 @@
                 form: {
                     realName: '',
                     jobNumber: '',
-                    college: '',
+                    college: '计算机学院',
                     sex: '',
                     email: '',
                     phone: '',
@@ -207,6 +211,17 @@
                     value: '艺术设计学院',
                     label: '艺术设计学院'
                 }],
+                rules: {
+                    realName: [
+                        { required: true, message: '请输入教师名称', trigger: 'blur' },
+                    ],
+                    jobNumber: [
+                        { required: true, message: '请输入工号', trigger: 'blur' },
+                    ],
+                    email: [
+                        { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+                    ]
+                }
             }
         },
         methods: {
@@ -256,21 +271,38 @@
                     });
                 });
             },
-            AddUser(){
+            checkForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (!valid) {
+                        this.$message({
+                            type: 'error',
+                            message: '添加失败'
+                        });
+                        return false;
+                    }
+                })
+            },
+            AddUser(formName){
                 this.form.userName = this.form.jobNumber;
                 this.form.userPassword = this.form.jobNumber;
-                console.log(this.form);
-                axios.post("secretary/teacher",this.form)
-                    .then(res => {
-                        console.log("success adduser:", res);
-                    }).catch(error => {
+                if (this.checkForm(formName)){
+                    axios.post("secretary/teacher",this.form)
+                        .then(res => {
+                            console.log("success adduser:", res);
+                            for (let att in this.form){
+                                this.form.att = '';
+                            }
+                            this.form.college = '计算机学院';
+                            this.$message({
+                                message: '添加用户成功！',
+                                type: 'success'
+                            });
+                        }).catch(error => {
                         console.log("error adduser:", error);
-                })
-                this.$message({
-                    message: '添加用户成功！',
-                    type: 'success'
-                });
+                    });
+                }
             },
+
             GetTemplate(){
                 location.href = this.$store.state.request_url + '/file/model.xls';
             },
@@ -317,7 +349,7 @@
         margin-left: 11%;
     }
     .marbottom {
-        margin-bottom: 10px;
+        margin-bottom: 14px;
     }
     .box-card{
          margin-top: 20px;

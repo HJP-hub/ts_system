@@ -12,24 +12,14 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="出版社名称" width="310" align="center">
+                    <el-table-column label="出版社名称" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="申请次数" width="310" align="center">
-                        <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{}}</span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="出版社名称" width="310" align="center">
-                        <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{}}</span>
+                            <span style="margin-left: 10px">{{scope.row.publisher}}</span>
                         </template>
                     </el-table-column>
                     <el-table-column label="申请次数" align="center">
                         <template slot-scope="scope">
-                            <span style="margin-left: 10px">{{}}</span>
+                            <span style="margin-left: 10px">{{scope.row.number}}</span>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -58,16 +48,12 @@
         components: {
             Main
         },
+        mounted(){
+            this.page_request();
+        },
         data(){
             return {
-                tableData: [
-                    {},
-                    {},
-                    {},
-                    {},
-                    {},
-
-                ],
+                tableData: [],
                 req: {
                     page: 1,
                     size: 5
@@ -96,7 +82,7 @@
                 this.page_request();
             },
             page_request(){
-                axios.get('secretary/college/' + this.college_id + '?page=' + this.req.page + '&size=' +  this.req.size)
+                axios.get('main/publisher' + '?page=' + this.req.page + '&size=' +  this.req.size)
                     .then(res =>{
                         console.log('getall:',res);
                         this.tableData = res.data.data.list;

@@ -39,8 +39,8 @@
                             <img :src=book.imageUrl>
                             <div class="book_Info">
                                 <div>
-                                    <p><el-link :href=book.bookUrl type="primary">{{book.titleName===undefined?book.titleName:book.titleName.substring(0,book.titleName.length>15?15:book.titleName.length) + '...'}}</el-link></p>
-                                    <span>{{book.author===undefined?book.author:book.author.substring(0,book.author.length>12?12:book.author.length) + '...'}}&nbsp;/&nbsp;</span>
+                                    <p><el-link :href=book.bookUrl type="primary" target="_blank">{{book.titleName===undefined?book.titleName:(book.titleName.length>15?book.titleName.substring(0,15)+"...":book.titleName)}}</el-link></p>
+                                    <span>{{book.author===undefined?book.author:(book.author.length>12?book.author.substring(0,12)+"...":book.author)}}&nbsp;/&nbsp;</span>
                                     <span>{{book.titleDate}}&nbsp;/&nbsp;</span>
                                     <span>{{book.publisher}}</span>
                                 </div>
