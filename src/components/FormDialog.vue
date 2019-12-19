@@ -190,7 +190,7 @@
                 axios.get('teacher/excel/' + this.textbook.id)
                     .then(res => {
                         console.log("excel_id:", res);
-                        location.href = 'http://172.16.61.151:9090/api/file/' + res.data.data;
+                        location.href = this.$store.state.request_url + '/file/' + res.data.data;
                     })
             },
             close(){

@@ -171,7 +171,7 @@
         },
         methods: {
             handleOperateC(index, status){
-                  let college_id = this.$store.state.collegeName.indexOf(this.college_info[index], 0) + 1;
+                  let college_id = this.$store.state.collegeName.indexOf(this.college_info[index].collegeName, 0) + 1;
                   axios.put('secretary/teacher/' + status + '/' + college_id)
                       .then(res => {
                           if (status){

@@ -72,13 +72,13 @@
                             <div id="text">
                                 <el-form label-position="left" ref="form" :model="form" label-width="80px">
                                     <el-form-item class="marbottom" label="教师名称">
-                                        <el-input class="input_width" width="30px" size="small" v-model="form.userName"></el-input>
+                                        <el-input class="input_width" width="30px" size="small" v-model="form.realName"></el-input>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="工号">
                                         <el-input class="input_width" size="small" v-model="form.jobNumber"></el-input>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="学院">
-                                        <el-select v-model="formInline.college" placeholder="请选择" size="small" class="input_width">
+                                        <el-select v-model="form.college" placeholder="请选择" size="small" class="input_width">
                                             <el-option
                                                     v-for="item in college_options"
                                                     :key="item.value"
@@ -88,8 +88,8 @@
                                         </el-select>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="性别">
-                                        <el-radio v-model="formInline.sex" label="男" border>男</el-radio>
-                                        <el-radio v-model="formInline.sex" label="女" border>女</el-radio>
+                                        <el-radio v-model="form.sex" label="男" border>男</el-radio>
+                                        <el-radio v-model="form.sex" label="女" border>女</el-radio>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="邮箱">
                                         <el-input class="input_width" size="small" v-model="form.email"></el-input>
@@ -114,8 +114,11 @@
             </el-row>
             <el-row class="mar">
                 <el-col :span="4">
-                    <el-button type="primary" round class="btnmar" icon="el-icon-document-remove">多用户模板</el-button><br/>
-                    <el-button type="primary" round class="btnmar" icon="el-icon-notebook-2">多用户导入</el-button>
+                    <el-button type="primary" round class="btnmar" icon="el-icon-document-remove" @click="GetTemplate">多用户模板</el-button><br/>
+                    <el-upload
+                            :action="req.file_url">
+                        <el-button type="primary" class="btnmar" round icon="el-icon-notebook-2">多用户导入</el-button>
+                    </el-upload>
                 </el-col>
                 <el-col :span="20">
                     <el-card class="box-card" shadow="always">
@@ -151,18 +154,17 @@
                     '修改秘书用户信息请联系数据库管理员'
                 ],
                 form: {
-                    userName: '',
+                    realName: '',
                     jobNumber: '',
                     college: '',
                     sex: '',
                     email: '',
                     phone: '',
+                    userType: 1,
+                    userName: '',
+                    userPassword: ''
                 },
                 centerDialogVisible: false,
-                formInline: {
-                    user: '',
-                    region: '',
-                },
                 user:{
                     realName: ''
                 },
@@ -171,7 +173,8 @@
                     page: 1,
                     size: 7,
                     startTask: '',
-                    college_id: ''
+                    college_id: '',
+                    file_url: this.$store.state.request_url + '/secretary/excel'
                 },
                 page:{
                     total: 0
@@ -254,13 +257,19 @@
                 });
             },
             AddUser(){
+                this.form.userName = this.form.jobNumber;
+                this.form.userPassword = this.form.jobNumber;
+                console.log(this.form);
                 axios.post("secretary/teacher",this.form)
                     .then(res => {
                         console.log("success adduser:", res);
                     }).catch(error => {
                         console.log("error adduser:", error);
                 })
-            }
+            },
+            GetTemplate(){
+                location.href = this.$store.state.request_url + '/file/model.xls';
+            },
         }
 
 
