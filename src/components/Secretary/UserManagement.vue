@@ -266,6 +266,10 @@
                     }).catch(error => {
                         console.log("error adduser:", error);
                 })
+                this.$message({
+                    message: '添加用户成功！',
+                    type: 'success'
+                });
             },
             GetTemplate(){
                 location.href = this.$store.state.request_url + '/file/model.xls';
