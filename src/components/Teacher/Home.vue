@@ -9,7 +9,7 @@
                     </el-carousel-item>
                 </el-carousel>
             </div>
-            <div class="all_fun">
+            <el-row class="all_fun">
                 <el-badge class="route_item">
                     <el-button size="large" @click="$router.push('./applicationform/0/-1')">填写申请表</el-button>
                 </el-badge>
@@ -28,7 +28,7 @@
                 <el-badge class="route_item" type="primary">
                     <el-button size="large" @click="Visible.PVisible=true">个人资料</el-button>
                 </el-badge>
-            </div>
+            </el-row>
             <UserDialog :CVisible="Visible"></UserDialog>
             <div class="choose_book">
                 <h1>{{user.college}}推荐书籍</h1>

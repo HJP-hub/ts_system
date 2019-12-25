@@ -12,7 +12,7 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="课程名称" width="260" align="center">
+                    <el-table-column label="课程名称" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
@@ -22,12 +22,12 @@
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="出版单位" width="260" align="center">
+                    <el-table-column label="出版单位" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.publisher}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="保存时间" width="160" align="center">
+                    <el-table-column label="保存时间" align="center">
                         <template slot-scope="scope">
                             <el-date-picker
                                     v-model="scope.row.date"
@@ -36,7 +36,7 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" width="200">
+                    <el-table-column label="操作" align="center" >
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"

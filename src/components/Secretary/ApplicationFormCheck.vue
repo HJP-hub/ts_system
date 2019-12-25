@@ -12,7 +12,7 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="申请人" width="140" align="center">
+                    <el-table-column label="申请人" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.teacherName}}</span>
                         </template>
@@ -22,17 +22,17 @@
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="课程名称" width="220" align="center">
+                    <el-table-column label="课程名称" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="教材类型" width="230" align="center">
+                    <el-table-column label="教材类型"  align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleType}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="申请日期" width="180" align="center">
+                    <el-table-column label="申请日期" align="center">
                         <template slot-scope="scope">
                             <el-date-picker
                                     v-model="scope.row.date"
@@ -41,7 +41,7 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" width="120">
+                    <el-table-column label="操作" align="center">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"

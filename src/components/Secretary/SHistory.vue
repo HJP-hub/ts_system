@@ -39,7 +39,7 @@
                             type="selection"
                             width="55">
                     </el-table-column>
-                    <el-table-column label="申请人" width="140" align="center">
+                    <el-table-column label="申请人" width="100" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.teacherName}}</span>
                         </template>
@@ -49,7 +49,7 @@
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="课程名称" width="200" align="center">
+                    <el-table-column label="课程名称" width="150" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>

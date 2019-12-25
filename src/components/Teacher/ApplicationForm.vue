@@ -468,7 +468,7 @@
         color: #565656;
     }
     #form {
-        width: 70%;
+        width: 80%;
         margin: 50px auto;
         border: 1px solid;
         border-radius: 20px;

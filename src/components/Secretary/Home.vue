@@ -85,7 +85,7 @@
                 axios.get('main/publisher' + '?page=' + this.req.page + '&size=' +  this.req.size)
                     .then(res =>{
                         console.log('getall:',res);
-                        this.tableData = res.data.data.list;
+                        this.tableData = res.data.data;
                         this.page.total = res.data.data.total;
                     });
             }

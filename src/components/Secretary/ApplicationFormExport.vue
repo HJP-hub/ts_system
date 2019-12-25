@@ -76,12 +76,12 @@
                                         type="selection"
                                         width="55">
                                 </el-table-column>
-                                <el-table-column label="教师名称" width="200" align="center">
+                                <el-table-column label="教师名称" width="180" align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{scope.row.realName}}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="工号" width="230" align="center">
+                                <el-table-column label="工号" width="160" align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{scope.row.jobNumber}}</span>
                                     </template>

@@ -6,7 +6,7 @@
                 <el-table
                         :data="tableData"
                         style="width: 80%; margin-top: 30px; margin-left: 11%">
-                    <el-table-column label="课程名称" width="150" align="center">
+                    <el-table-column label="课程名称"  align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.courseName}}</span>
                         </template>
@@ -16,7 +16,7 @@
                             <span style="margin-left: 10px">{{scope.row.titleName}}</span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="出版时间" width="150" align="center">
+                    <el-table-column label="出版时间" align="center">
                         <template slot-scope="scope">
                             <span style="margin-left: 10px">{{scope.row.titleDate}}</span>
                         </template>
@@ -39,13 +39,13 @@
                             </el-date-picker>
                         </template>
                     </el-table-column>
-                    <el-table-column label="状态" width="70" align="center">
+                    <el-table-column label="状态" align="center">
                         <template slot-scope="scope">
                             <el-tag type="success" v-if="scope.row.status===3">通过</el-tag>
                             <el-tag type="danger" v-else-if="scope.row.status===4">驳回</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" width="200">
+                    <el-table-column label="操作" align="center" width="160">
                         <template slot-scope="scope">
                             <el-button
                                     size="mini"

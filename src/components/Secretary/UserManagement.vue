@@ -22,17 +22,17 @@
                         <div class="table">
                             <el-table
                                     :data="teacher_info">
-                                <el-table-column label="教师名称" width="200" align="center">
+                                <el-table-column label="教师名称"align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{scope.row.realName}}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="工号" width="120" align="center">
+                                <el-table-column label="工号"align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{scope.row.jobNumber}}</span>
                                     </template>
                                 </el-table-column>
-                                <el-table-column label="学院" width="250" align="center">
+                                <el-table-column label="学院" align="center">
                                     <template slot-scope="scope">
                                         <span style="margin-left: 10px">{{scope.row.college}}</span>
                                     </template>
@@ -92,14 +92,14 @@
                                         </el-select>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="性别">
-                                        <el-radio v-model="form.sex" label="男" border>男</el-radio>
-                                        <el-radio v-model="form.sex" label="女" border>女</el-radio>
+                                        <el-radio v-model="form.sex" label="男" border size="mini">男</el-radio>
+                                        <el-radio v-model="form.sex" label="女" border size="mini">>女</el-radio>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="邮箱" prop="email">
                                         <el-input class="input_width" size="small" v-model="form.email"></el-input>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="联系电话">
-                                        <el-input class="input_width" size="small" v-model="form.phone" type="tel"></el-input>
+                                        <el-input class="input_width" size="small" v-model="form.phone"></el-input>
                                     </el-form-item>
                                     <el-form-item class="marbottom" label="用户名">
                                         <el-input class="input_width" size="small" v-model="form.jobNumber" disabled></el-input>
@@ -225,25 +225,25 @@
             }
         },
         methods: {
-            prev(){
+            prev() {
                 this.req.page -= 1;
             },
-            next(){
+            next() {
                 this.req.page += 1;
             },
-            current(){
-                console.log('current:',this.req.page);
+            current() {
+                console.log('current:', this.req.page);
                 this.teacher_request();
             },
-            teacher_request(){
-                axios.get('secretary/teacher' + '?page=' + this.req.page + '&size=' +  this.req.size + '&startTask=' + this.req.startTask + '&collegeId=' + this.req.college_id)
-                    .then(res =>{
-                        console.log('teacher_list:',res);
+            teacher_request() {
+                axios.get('secretary/teacher' + '?page=' + this.req.page + '&size=' + this.req.size + '&startTask=' + this.req.startTask + '&collegeId=' + this.req.college_id)
+                    .then(res => {
+                        console.log('teacher_list:', res);
                         this.teacher_info = res.data.data.list;
                         this.page.total = res.data.data.total;
                     });
             },
-            handleDelete(index){
+            handleDelete(index) {
                 this.$confirm('此操作将永久删除该申请表, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -251,14 +251,14 @@
                 }).then(() => {
                     axios.delete('/secretary/teacher/' + this.teacher_info[index].id)
                         .then(() => {
-                            if (this.teacher_info.length !== 1){
+                            if (this.teacher_info.length !== 1) {
                                 this.teacher_info.splice(index, 1);
                             }
                             this.$message({
                                 type: 'success',
                                 message: '删除成功!'
                             });
-                        }).catch(() =>{
+                        }).catch(() => {
                         this.$message({
                             type: 'success',
                             message: '删除失败!'
@@ -273,7 +273,9 @@
             },
             checkForm(formName) {
                 this.$refs[formName].validate((valid) => {
-                    if (!valid) {
+                    if (valid) {
+                        this.req_add_teacher();
+                    } else {
                         this.$message({
                             type: 'error',
                             message: '添加失败'
@@ -282,33 +284,45 @@
                     }
                 })
             },
-            AddUser(formName){
+            AddUser(formName) {
                 this.form.userName = this.form.jobNumber;
                 this.form.userPassword = this.form.jobNumber;
-                if (this.checkForm(formName)){
-                    axios.post("secretary/teacher",this.form)
-                        .then(res => {
-                            console.log("success adduser:", res);
-                            for (let att in this.form){
-                                this.form.att = '';
-                            }
-                            this.form.college = '计算机学院';
+                this.checkForm(formName);
+            },
+            req_add_teacher() {
+                axios.post("secretary/teacher", this.form)
+                    .then(res => {
+                        console.log("success adduser:", res);
+                        if ("CHECK_FAIL" in res.data.data){
+                            this.$message({
+                                message: res.data.data.CHECK_FAIL + ",请重填",
+                                type: 'warning'
+                            });
+                        }else{
                             this.$message({
                                 message: '添加用户成功！',
                                 type: 'success'
                             });
-                        }).catch(error => {
-                        console.log("error adduser:", error);
-                    });
-                }
+                            this.form = {
+                                realName: '',
+                                jobNumber: '',
+                                college: '计算机学院',
+                                sex: '',
+                                email: '',
+                                phone: '',
+                                userType: 1,
+                                userName: '',
+                                userPassword: ''
+                            }
+                        }
+                    }).catch(error => {
+                    console.log("error adduser:", error);
+                });
             },
-
-            GetTemplate(){
+            GetTemplate() {
                 location.href = this.$store.state.request_url + '/file/model.xls';
             },
         }
-
-
     }
 </script>
 
