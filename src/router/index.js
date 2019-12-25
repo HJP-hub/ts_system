@@ -15,7 +15,7 @@ import ApplicationFormExport from "../components/Secretary/ApplicationFormExport
 import SHistory from "../components/Secretary/SHistory";
 import UserManagement from "../components/Secretary/UserManagement";
 import SHome from "../components/Secretary/Home"
-
+import No_found from "../views/404"
 Vue.use(VueRouter);
 
 const routes = [
@@ -30,6 +30,7 @@ const routes = [
     },
     {
         path: '/teacher',
+        meta:{requireAuth:true},
         component: Teacher,
         children:[
             {
@@ -71,6 +72,7 @@ const routes = [
     {
       path: '/secretary',
       component: Secretary,
+        meta:{requireAuth:true},
       children:[
             {
                 path: '',
@@ -102,13 +104,30 @@ const routes = [
                 component: UserManagement
             }
         ]
+    },
+    {
+        path: "*",
+        component: No_found
     }
 ];
-
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
 });
-
+/**
+  *  路由 守卫 函数
+  */
+router.beforeEach((to, from, next)=> {
+    let token  = sessionStorage.getItem('token');
+    if(to.matched.some(r => r.meta.requireAuth)){
+        if(token){
+            next();
+        }else{
+            next('/');
+        }
+    }else{
+        next();
+    }
+});
 export default router

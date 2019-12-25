@@ -427,7 +427,7 @@
                 axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
                         console.log('create_class:',res);
-                        this.formInline.textbook.classList = res.data;
+                        this.formInline.textbook.classList = res.data.data;
                         axios.post('/teacher/savetextbook', this.formInline.textbook)
                             .then(res => {
                                 console.log('create_textbook',res);
@@ -444,7 +444,7 @@
                 axios.post('/teacher/saveclass',this.tableData)
                     .then(res => {
                         console.log('update_class:',res);
-                        this.formInline.textbook.classList = res.data;
+                        this.formInline.textbook.classList = res.data.data;
                         axios.put('/teacher/textbook', this.formInline.textbook)
                             .then(res => {
                                 console.log('update_textbook',res);

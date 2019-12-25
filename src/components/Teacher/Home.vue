@@ -65,30 +65,37 @@
             UserDialog
         },
         mounted(){
-            this.user_id = JSON.parse(sessionStorage.getItem("user")).id;
-            this.user.college = JSON.parse(sessionStorage.getItem("user")).college;
-            this.user.startTask = JSON.parse(sessionStorage.getItem("user")).startTask;
-            this.req.college_id = this.$store.state.collegeName.indexOf(this.user.college, 0) + 1;
-            axios.get('teacher/statistics/' + this.user_id)  //请求各类型表的数目
+            this.user.id = JSON.parse(sessionStorage.getItem("user")).id;
+            axios.get('teacher/' + this.user.id)
                 .then(res => {
-                    console.log("home_formnum:", res);
-                    this.FormNum = res.data.data;
-                });
-            this.req.page = Math.floor(Math.random()*(this.req.total / 8)) + 1;
-            axios.get('main/' + this.req.college_id  + '?page=' + this.req.page + '&size=' +  this.req.size)  //请求推荐书籍数据
-                .then(res => {
-                    console.log("book:", res);
-                    this.books = res.data.data.list;
-                    this.req.total = res.data.data.total;
-                });
-            if (this.user.startTask === 1){
-                this.open1();
-            }
+                        console.log("getuser:",res);
+                            sessionStorage.setItem("user",JSON.stringify(res.data.data));
+                        this.user.college = JSON.parse(sessionStorage.getItem("user")).college;
+                        this.user.startTask = JSON.parse(sessionStorage.getItem("user")).startTask;
+                        this.req.college_id = this.$store.state.collegeName.indexOf(this.user.college, 0) + 1;
+                        axios.get('teacher/statistics/' + this.user.id)  //请求各类型表的数目
+                            .then(res => {
+                                console.log("home_formnum:", res);
+                                this.FormNum = res.data.data;
+                            });
+                        this.req.page = Math.floor(Math.random()*(this.req.total / 8)) + 1;
+                        axios.get('main/' + this.req.college_id  + '?page=' + this.req.page + '&size=' +  this.req.size)  //请求推荐书籍数据
+                            .then(res => {
+                                console.log("book:", res);
+                                this.books = res.data.data.list;
+                                this.req.total = res.data.data.total;
+                            });
+                        if (this.user.startTask === 1){
+                            this.open1();
+                        }
+                    }
+                );
         },
         data(){
             return {
                 user:{
-                    college: ''
+                    college: '',
+                    id: ""
                 },
                 img_url:[
                     require('../../assets/img/slideshow/s1.jpg'),

@@ -37,7 +37,7 @@
                                     offset: 150
                                 });
                         }
-                        if (res.data.data === '该用户不存在') {
+                        else if (res.data.data === '该用户不存在') {
                                 this.$message({
                                     message: '该用户不存在',
                                     type: 'warning',
@@ -46,13 +46,16 @@
                                     offset: 150
                                 });
                         }
-                        if (res.data.data.userType === 1){
-                            this.$router.push('./teacher')
+                        else{
+                            sessionStorage.setItem("user",JSON.stringify(res.data.data));
+                            sessionStorage.setItem("token",JSON.stringify(res.data.data.token));
+                            if (res.data.data.userType === 1){
+                                this.$router.push('./teacher')
+                            }
+                            else if (res.data.data.userType === 2){
+                                this.$router.push('./secretary')
+                            }
                         }
-                        else if (res.data.data.userType === 2){
-                            this.$router.push('./secretary')
-                        }
-                        sessionStorage.setItem("user",JSON.stringify(res.data.data))
                     })
                 }
             }

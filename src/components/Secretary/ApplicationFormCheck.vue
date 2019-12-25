@@ -89,7 +89,8 @@
                 CData:{
                     Visible: false,
                     textbook: '',
-                    tableData: []
+                    tableData: [],
+                    teacherName: ''
                 },
                 req: {
                     page: 1,
@@ -108,6 +109,7 @@
                         this.CData.textbook = res.data.data.textbook;
                         this.CData.tableData = res.data.data.class;
                         this.CData.Visible=true;
+                        this.CData.teacherName = this.tableData[index].teacherName;
                     });
             },
             prev(){

@@ -49,7 +49,13 @@
             Main
         },
         mounted(){
-            this.page_request();
+            let id = JSON.parse(sessionStorage.getItem("user")).id;
+            axios.get('/teacher/' + id)
+                .then(res => {
+                        sessionStorage.setItem("user",JSON.stringify(res.data.data));
+                        this.page_request();
+                    }
+                );
         },
         data(){
             return {
@@ -85,7 +91,7 @@
                 axios.get('main/publisher' + '?page=' + this.req.page + '&size=' +  this.req.size)
                     .then(res =>{
                         console.log('getall:',res);
-                        this.tableData = res.data.data;
+                        this.tableData = res.data.data.publisher;
                         this.page.total = res.data.data.total;
                     });
             }

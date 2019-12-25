@@ -58,7 +58,12 @@
     export default {
         name: "UserDialog",
         mounted(){
-            this.formInline.user = JSON.parse(sessionStorage.getItem("user"));
+            let id = JSON.parse(sessionStorage.getItem("user")).id;
+            axios.get('teacher/' + id)
+                .then(res => {
+                    this.formInline.user = res.data.data;
+                    sessionStorage.setItem("user",JSON.stringify(res.data.data));
+                });
         },
         props: ['CVisible'],
         data(){

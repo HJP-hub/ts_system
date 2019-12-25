@@ -29,7 +29,8 @@
         },
         methods: {
             Logout(){
-                this.$router.replace('/login')
+                this.$router.replace('/login');
+                sessionStorage.clear();
             }
         },
     }
